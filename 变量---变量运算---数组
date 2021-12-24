@@ -34,4 +34,4 @@
               System.out.println(变量名.length)  //获取数组大小
               System.out.println(变量名[n])    //输出数组n的值 其中n不可超过定义的数据个数
     (二)字符串数组
-        格式:String[]
+        格式:String[]变量名={"","",.....}
