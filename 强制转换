@@ -18,6 +18,15 @@
                         }
 （2）注意：if判断语句是从上到下运行，要注意判断条件（范围从大到小）。
           == 判断数据   equals（）判断字符
+/*例子：     int a=1;                         //给整数a赋值1
+       if(a>=0){                              //判断a是否大于等于0
+           System.out.println("正确");        //如果a大于等于0，则输出正确，否则继续
+       }elas if(a>5){                        //判断a是否大于5
+           System.out.println("错误");       //如果a大于5，则输出错误，否则继续
+       }elas{                               //除去以上判断范围的其他情况
+           System.out.println("非错非正");   //输出非正非错
+       }
+       **运行结果：正确**
 四、switch多重选择语句
  （1）格式:
            变量类型 变量名=变量；
@@ -29,25 +38,73 @@
             break;                   //结束语句
                  ......
                }
- （2）switch语句可以与if语句转换；switch要写break,否则后果严重；
+ （2）switch语句可以与if语句转换；switch要写break,否则后果严重；多重判断也可以判断字符串；
+ /* 例子：
+             int b=2;                       //给整数b赋值2
+     switch(b){                           //多重判断b
+         case 1:                          //第一种:假如b为1
+            System.out.println("一号");   //若为正确，则输出一号，若不正确继续运行
+        break;                            //跳出当前循环
+        case 2:                           
+            System.ou.println("二号");
+        break;
+        case 3:
+           System,out,println("三号");
+        break;
+        default:                         //不满足以上条件则执行
+           System.out.pritln("错误");    //输出错误
+        break;                          //跳出当前循环
+     }
+          ***运行结果：二号***
  五、循环语句
-  （1）格式:while(条件表达式){
+     (1)  格式:while(条件表达式){
         ....  //循环语句
      }
-  （2）注意：while可套用其他语句；可能一次都不循环。
-      do while循环语句
+       注意：while可套用其他语句；可能一次都不循环。
+/*例子：   int sum=0;       //给整数sum赋值0                   
+          int  a=1;         //给整数a赋值1
+         while(a<=5){      //while循环，循环条件是a<=5          含义：0+1+2+3+4+5=15
+             sum=a+sum;    //每次循环都把a累加到sum中
+             a++;          //每次循环a都加1
+         }
+    System.out.println(sum);  //输出sum
+        **输出结果：15**
+      (2)   do while循环语句
         格式：do{
                 循环语句
             }while(条件表达式)
-  （3）注意：do while循环至少循环一次
-    for循环语句
+        注意：do while循环至少循环一次
+/*例子：    int a=0;
+           int b=1;
+      do{
+           a=a+b;
+          b++;
+      } while(b<=5)
+      **输出结果：15**
+
+      (3)   for循环语句
       格式:for（初始条件，循环条件，循环后数据更新器）{
           //循环语句
       }
-  （4）注意：for循环可能一次都不循环
-    for each语句
+        注意：for循环可能一次都不循环
+    /*例子：    int a=0;
+           for(int b=1;b<=5;b++){
+               a=a+b;
+           }
+        System.out.println(a);
+           **输出结果15**
+     (4)    for each语句
       格式：for(集合类型 变量名：集合){
           循环语句
       }
- （5）通常用于遍历数组。
-/例子：
+         通常用于遍历数组,for each不能用于遍历数组长度。
+/*例子：int [] a=new int[2];
+           a[0]=1;
+           a[1]=2;
+        for(int b:a){
+            System.out.println(b);
+        }
+        **输出结果：1,2**
+break和continue
+break:跳出自己所在的循环。
+continue:跳出整个循环。
