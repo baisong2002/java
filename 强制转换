@@ -108,3 +108,20 @@
 break和continue
 break:跳出自己所在的循环。
 continue:跳出整个循环。
+二、遍历数组
+ 1、可以使用for语句或者for each 语句遍历数组。
+  /*例子： int[]ns=new int[2];
+           ns[0]=1;                                运用for语句正序打印数组ns,倒叙则将for循环改为：for(int i=ns.length;i>=0;i++){System.out.println(i);  }
+           ns[1]=2;
+        for(int i=0;i<ns.length;i++){            i不可等于数组索引，若等于数组索引则超出索引范围
+            System.out.println(i);
+        }
+   **输出结果：1,2 **
+   简便写法：int []ns={1,2}
+        System.out.println(Arrays.toString(ns));  Arrays.toString()是JAVA提供的，可以快速打印数组。
+    Arrays.toString()为打印数组，Arrays.sort()为数组按从小到大排序并输出。
+ 2、多维数组：
+            int[][]ns={{1,2,3}{4,5,6}{7,8,9}}  //二维数组，ns.length为3，是包含了三个数组并不是3个变量。
+           System.out.println(ns[1][2]);       //打印第一个数组中第二个变量。
+              **输出结果：2**
+    可使用多层嵌套for语句来打印多维数组，也可使用JAVA提供的Arrays.deepToString()来快速打印。
