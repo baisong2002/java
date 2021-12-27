@@ -99,3 +99,25 @@ public void name(String name,int age){
       5、子类可以向上转型为父类。/*例子：子类名 变量=new 父类名（）； 可以将子类安全、完全的转换为父类。
       6、向下转型：即父类转换为子类。父类子类都有的则可以转型，子类有父类没有则不可以。
 /*例子：
+class Person{
+    protected int age;
+    protected String name;
+    public Person(String name,int age){
+     this.name=name;
+     this.age=age;
+    }
+    public void setName(){
+        return name;
+    }
+    public void setAge(){
+        return age;
+    }
+}
+class Student extends Person{
+  protected int socer;
+  public Perpeo(String name,int age,int socer){
+      super(name,age);
+      this.socer=socer;
+  }
+}
+/*注意：super后，括号里的内容要与父类中构造方法里 定义的参数顺序相同。
