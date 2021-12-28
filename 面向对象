@@ -120,4 +120,18 @@ class Student extends Person{
       this.socer=socer;
   }
 }
-/*注意：super后，括号里的内容要与父类中构造方法里 定义的参数顺序相同。
+//注意：super后，括号里的内容要与父类中构造方法里 定义的参数顺序相同。
+class Dog{
+    //color字段在这里相当于是外部变量，或者称为全局变量。
+    //作用域：从定义开始，到类体结束为止
+    private String color="白色"；
+    //方法的{ }相对于类来说，就是一个子结构
+    //子结构中创建的变量，可以称之为“局部变量”
+    public void printColor(){
+        //局部变量 color
+        //作用域：从定义开始，到方法结束的大括号为止
+        //局部变量优先级高，会覆盖同名的全局变量。
+        String color="绿色";
+        System.out.println("狗狗的颜色是："+color);
+    }
+}
