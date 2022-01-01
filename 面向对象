@@ -135,3 +135,5 @@ class Dog{
         System.out.println("狗狗的颜色是："+color);
     }
 }
+五、多态
+1、覆写:
