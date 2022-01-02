@@ -111,10 +111,10 @@ continue:跳出整个循环。
 二、遍历数组
  1、可以使用for语句或者for each 语句遍历数组。
   /*例子： int[]ns=new int[2];
-           ns[0]=1;                                运用for语句正序打印数组ns,倒叙则将for循环改为：for(int i=ns.length;i>=0;i++){System.out.println(i);  }
+           ns[0]=1;                                运用for语句正序打印数组ns,倒叙则将for循环改为：for(int i=ns.length;i>=0;i++){System.out.println(ns[i]);  }
            ns[1]=2;
         for(int i=0;i<ns.length;i++){            i不可等于数组索引，若等于数组索引则超出索引范围
-            System.out.println(i);
+            System.out.println(ns[i]);
         }
    **输出结果：1,2 **
    简便写法：int []ns={1,2}
