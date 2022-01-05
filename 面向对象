@@ -136,4 +136,6 @@ class Dog{
     }
 }
 五、多态
-1、覆写:
+1、Override和Overload
+  Overriede是重写，是子类对父类允许访问的方法在调用过程中的重新编写。（返回值和参数不变）
+  Overload是重载。，
