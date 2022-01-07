@@ -106,8 +106,9 @@
         }
         **输出结果：1,2**
 break和continue
-break:跳出自己所在的循环。
-continue:跳出整个循环。
+break:跳出自己所在的循环。（结束当前循环）
+continue:跳出整个循环。（结束档次循环）
+braek和continue后不能跟语句。
 二、遍历数组
  1、可以使用for语句或者for each 语句遍历数组。
   /*例子： int[]ns=new int[2];
@@ -125,3 +126,4 @@ continue:跳出整个循环。
            System.out.println(ns[1][2]);       //打印第一个数组中第二个变量。
               **输出结果：2**
     可使用多层嵌套for语句来打印多维数组，也可使用JAVA提供的Arrays.deepToString()来快速打印。
+   
