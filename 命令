@@ -1,0 +1,18 @@
+cd:改变目录
+cd:退回到上一个目录，直接cd进入默认目录
+pwd：显示当前所在目录路径
+touch：新建一个文件
+rm：删除一个文件
+mkdir：新建一个文件夹
+mv：移动文件
+rest：重新初始化终端/清屏
+clear：清屏
+history：查看命令历史
+exit：退出
+#：表示注释
+git add files 暂存
+git commit 提交到本地的仓库
+git push 提交到远程仓库
+git pull 从远程弄到本地
+git reset 从本地弄到暂存
+git checkout 从暂存弄到gitbush
