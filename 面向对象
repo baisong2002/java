@@ -112,10 +112,10 @@ class Person{
      this.name=name;
      this.age=age;
     }
-    public void setName(){
+    public String getName(){
         return name;
     }
-    public void setAge(){
+    public int getAge(){
         return age;
     }
 }
@@ -124,6 +124,9 @@ class Student extends Person{
   public Perpeo(String name,int age,int socer){
       super(name,age);
       this.socer=socer;
+  }
+  public int getSocer(){
+      return socer;
   }
 }
 //注意：super后，括号里的内容要与父类中构造方法里 定义的参数顺序相同。
@@ -139,9 +142,40 @@ class Dog{
         //局部变量优先级高，会覆盖同名的全局变量。
         String color="绿色";
         System.out.println("狗狗的颜色是："+color);
-    }
+    }  
 }
 五、多态
 1、Override和Overload
   Overriede是重写，是子类对父类允许访问的方法在调用过程中的重新编写，重写后输出子类重写父类的方法。（方法名和形参列表相同，子类权限修饰符不小于父类的权限修饰符）
   Overload是重载。
+2、多态性：
+ 对象的多态性：父类的引用指向子类的对象（子类的对象赋给父类引用）
+ 例子：父类名 变量=new 子类名（）；
+ 使用：当调用子父类同名同参数的方法时，实际执行是子类重写父类的方法-----虚拟调用法
+       调用不了子类特有的方法，只能调用父类有的方法
+       虚拟方法调用：我们在编译是只能调用父类中声明的方法，在运行时我们实际执行子类重写父类的方法
+    编译看左边，运行看右边
+使用前提：（1）要有类的继承关系
+         （2）要有方法的重写
+ 例子：
+ public class Main {
+
+  public static void main(String[] args) {
+	// write your code here
+          Person p1=new Student();                 //父类的引用指向子类的方法
+             p1.name();
+    }
+}
+class Person{
+     public  void  name(){
+         System.out.println("小泽玛利亚");
+     }
+}
+class Student extends Person{
+    @Override
+    public  void  name(){
+        System.out.println("苍井空");
+    }
+}
+    输出结果：*****苍井空*****
+    
