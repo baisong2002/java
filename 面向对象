@@ -148,7 +148,7 @@ class Dog{
 1、Override和Overload
   Overriede是重写，是子类对父类允许访问的方法在调用过程中的重新编写，重写后输出子类重写父类的方法。（方法名和形参列表相同，子类权限修饰符不小于父类的权限修饰符）
   Overload是重载。
-2、多态性：
+2、多态性：针对某个方法调用我们无法确定其实际操作那个方法，只有在运行时才能确定
  对象的多态性：父类的引用指向子类的对象（子类的对象赋给父类引用）
  例子：父类名 变量=new 子类名（）；
  使用：当调用子父类同名同参数的方法时，实际执行是子类重写父类的方法-----虚拟调用法
@@ -178,4 +178,45 @@ class Student extends Person{
     }
 }
     输出结果：*****苍井空*****
+3、super：调用父类中被子类覆写的方法
+4、final修饰符
+   final定义在方法前，则该方法无法被子类覆写
+   final定义在类前，则该类无法被继承
+   final修饰其他字段，则该字段初始化后无法被修改。可以在类中用构造器初始化final字段值
+六、抽象类
+意义：父类仅仅定义一个方法，目的是为让子类继承他，运用了多态性
+  关键字：abstract
+  abstract声明方法，则该方法就是抽象方法，目的是为了子类继承并定义他。
+  abstract声明一个类，则该类就是抽象类，无法实例化，即：
+package com.company;
+
+public class Main {
+
+    public static void main(String[] args) {
+	// write your code here
+     Person p1=new Person() ;    //报错：请将abstract去掉
+    }
+}
+abstract class Person{
+    public String name;
+    public int age;
+    public Person(String name,int age){
+        this.name=name;
+        this.age=age;
+    }
+   public String getName(){
+        return name;
+   }
+   public int getAge(){
+        return age;
+   }
+}
+class Student extends Person{
+    public Student(String name,int age){
+        super(name,age);
+    }
+    
+}
+
+  
     
