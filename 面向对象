@@ -217,6 +217,49 @@ class Student extends Person{
     }
     
 }
+七、接口（interface）
+   JAVA中接口和类是并列的两个结构
+   定义接口的成员：
+       只能定义全局常量和抽象方法（public、static、final）、静态方法和默认方法，定义时可以不用写
+       例子：
+           interface Person{
+              void name();
+           }
+  接口中不能定义构造器，接口不可以实体化，通过子类覆写接口中的抽象方法去实现接口（implements）
+      如果实现类重写了接口的所有抽象方法，则此实现类则可以实例化
+      如果实现类没有重写接口的所有抽象方法，则此实现类仍是抽象类
+    例子：
+interface Person{
+         String getName();
+         int getAge();
+}
+class Student implements Person{
+    private String name;
+    private int age;
+    public void setName(String name){
+        this.name =name;
+        
+    }
+    public void setAge(int age){
+        this.age=age;
+    }
+    @Override
+    public String getName(){
+        return name;
+    }
+    @Override
+    public int getAge(){
+        return age;
+}
+
+    类可以实现多个接口，中间用,（逗号）隔开 ，如果需要继承则先写继承再写接口
+    例子：
+       class Student extends Person implements A,B{
+                 ....//方法体
+      } 
+    接口可以继承接口，而且可以多继承，相当于给接口扩展。
+    接口比抽象类更抽象
+    接口可以定义defaul方法
 
   
     
