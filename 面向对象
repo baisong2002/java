@@ -260,6 +260,50 @@ class Student implements Person{
     接口可以继承接口，而且可以多继承，相当于给接口扩展。
     接口比抽象类更抽象
     接口可以定义defaul方法
+ 接口的使用：
+ 1、接口使用上也满足了多态性
+ 2、接口实际上就是定义了一种规范
+ 匿名实现接口：
+ 1、非匿名类的非匿名对象
+ 2、非匿名实现类的匿名对象(变量.方法名（new 匿名方法）)
+ 3、匿名实现类的非匿名对象
+ 4、匿名实现类的匿名对象 （变量.方法名（new 接口类名（）{ @Override 接口抽象方法@Override接口抽象方法;}）
+       例子：
+public class Main {
 
+    public void main(String[] args) {
+        //非匿名实现类的非匿名对象          //匿名实现类的非匿名对象
+        Student s1=new Student();          Person p1=new Person(){
+        s1.setName("小王");                 @Override 
+        s1.setAge(12);                     public String getName(){
+                                              return null;
+    }                                       }
+interface Person{                           public int getAge(){
+                                              return 0;                                            }
+    String getName();                      }
+    int getAge();
+}
+class Student implements Person{
+    private String name;
+    private int age;
+    public void setName(String name){
+       this.name=name;
+
+    }
+    public void setAge(int age){
+        this.age=age;
+    }
+    @Override
+    public String getName(){
+        return name;
+    }
+    @Override
+    public int getAge(){
+        return age;
+    }
+}
+ 八、静态字段和静态方法
+  关键字（static）
+class定义的都是实例字段，用static修饰的就是静态字段，静态字段属于类，并不属于类对象变量和函数
   
     
