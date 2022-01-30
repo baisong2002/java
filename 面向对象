@@ -304,6 +304,38 @@ class Student implements Person{
 }
  八、静态字段和静态方法
   关键字（static）
+  1、静态字段
 class定义的都是实例字段，用static修饰的就是静态字段，静态字段属于类，并不属于类对象变量和函数
 静态字段共享一个储存空间，即：当我们修改一个方法的静态字段时，其他方法的相同的静态字段随之而修改
-    
+ 静态字段使用 类名.静态字段 来调用 
+ 2、静态方法
+ static修饰的方法就是静态方法，静态方法只能调用静态方法，即静态方法内部不能出现this、super，实例方法则可以调用静态和非静态方法。
+ 静态方法也需要通过 类名.静态方法名 来调用
+   public static void main(String[] args) {
+    Person p1=new Person();
+        Person.age();
+       Person.name="ni";
+        System.out.println(Person.name);
+    }
+}
+class Person{
+    public static String name;
+
+    public static void age(){
+        System.out.println("nihao");
+    }
+}
+九、包
+关键字package、import
+1、包package
+ 包package属于标识符，因此遵循标识符命名规则、规范
+ 每“.”表示包package的一层目录
+ 同一包下不能同名名的接口、类，不同包下则可以。
+ 包在第一行
+ 2、import
+ import就是导入，在原文件下导入指定包下的接口、类
+ 声明在包和类之间
+ 如果需要导入多个类、接口，并列写即可
+ 可以使用"xxx.*"的方式，表示导入xxx包下的所有结构
+ 如果导入java.long包下的类或者接口，则可以省略import结构
+ 如果使用的类或者接口是本包下的，则可以省略import结构
