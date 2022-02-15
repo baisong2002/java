@@ -53,4 +53,21 @@ StringBuffer replace(int start,int end,String str)  :把[start,end]内容更换�
 StringBuffer insert(int offset,xxx) :把指定位置插入xxx
 StringBuffer reverser()  :把当前字符序列逆转
 String 变量2=变量1.substring(int start,int end)  :返回一个从start开始到end结束的左闭右开的子字符串
-2、System类获取时间日期
+三、StringJoiner
+可以将字符用符号隔开，并提供前后缀。
+     StringJoiner a=new StringJoiner(",","[","]");       //创建一个StrinJoiner,用，将字符隔开,前缀是[,后缀是]。
+          a.add("ni").add("hao");                       //在字符nihao中间添加，
+          System.out.println(a);                        //输出a
+    ***输出结果[ni,hao]***
+StringJoiner提供了一个静态方法join可以不添加前后缀。
+         String[] a = {"ni", "hao"};                //创建String类型数组
+         var s = String.join(",", a);                //调用StringJoiner
+         System.out.println(s);
+    ***输出结果ni,hao***
+var定义变量：var 变量名=初始值；
+注意：
+   var只能在方法内定义局部变量，不能定义类的成员变量
+   var定义变量必须赋初始值
+   var只能一个变量，不能复合声明变量
+   var可以不生命变量类型
+四、包装类型
