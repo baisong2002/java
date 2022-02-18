@@ -70,4 +70,47 @@ var定义变量：var 变量名=初始值；
    var定义变量必须赋初始值
    var只能一个变量，不能复合声明变量
    var可以不生命变量类型
-四、包装类型
+四、包装类
+基本数据类型：int、short、long、double、char、float、byte、boolean
+引用数据类型：class、interface
+基本数据类型       包装类型
+byte               Byte              
+short              Short 
+long               Long 
+float              Float 
+double             Double 
+int                Integer                 父类都是Number
+------------------------------------------------------------
+char               Character 
+boolean            Boolean                   
+装箱：基本数据类型---->包装类
+             int a=1;
+            Integer b=new Integer(a);
+            System.out.println(b.toString());
+        ***输出结果：1***
+拆箱：包装类--->基本数据类型（调用包装类的xxxValue（））
+        Integer a=new Integer(10);
+          int b=  a.intValue();
+        System.out.println(b+1);
+       ***输出结果：11***
+包装类不可以进行加减，可以调用方法，也可以将包装类当做方法调用
+基本数据类型可以进行加减，不可以当做方法调用
+自动拆箱和自动封箱：
+自动封箱： int a=1;                         自动拆箱：Integer a=1;
+          Integer b=a;                               int b=a;
+   System.out.println(b.toString());         System.out.println(a+1);
+   ***输出结果：1 ***                       ***输出结果：2 ***
+所有包装类型都是不可变类；
+基本数据类型、包装类----->创建String类型
+  1、连接运算：                       2、调用String的方法：valueof()
+    int a=1;                                int a=1;
+  String b=a+"";                          String b=String.valueOf(a);
+ System.out.println(b);                   System.out.println(b);
+                        ***输出结果：1 *** 
+五、JAVABean
+读方法：
+public 数据类型 get变量名（）{return 变量名;}                public 数据类型 is变量名（）{return 变量名;}  
+写方法：
+public void  set变量名（形参）{this.变量名=形参;}
+读和写方法称为属性，也是一种封装数据的方法
+六、枚举类
