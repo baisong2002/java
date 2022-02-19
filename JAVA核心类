@@ -114,3 +114,132 @@ public 数据类型 get变量名（）{return 变量名;}                public 
 public void  set变量名（形参）{this.变量名=形参;}
 读和写方法称为属性，也是一种封装数据的方法
 六、枚举类
+ 前提条件：类的对象是有限个，确定的，数据类型必须一致
+ 如果只有一个对象，称之为单例模式的实现方式
+ 定义枚举类：
+ 方式一：
+   
+    public static void main(String[] args) {	
+         Person p1=new Person("xaio","男");
+         System.out.println(Person.Student2);
+        System.out.println(p1);
+    }
+}
+class Person{
+    //声明对象的属性：private final修饰
+    private final String name;
+    private final String xb;
+    //构造器，并给对象赋值                                       
+    public Person(String name,String xb){                                如果私有化构造器则上面无法用new创建
+     this.name=name;
+     this.xb=xb;
+    }
+    //提供枚举类的多个对象：public static final修饰
+    public static final Person Student=new Person("小米","女");
+    public static final Person Student1=new Person("小红","女");
+    public static final Person Student2=new Person("小刚","男");
+   //获取枚举对象的属性，并提供赋值器
+    public String getName() {
+        return name;
+    }
+    public String getXb() {
+        return xb;
+    }
+    //调用toString方法打印枚举属性
+    @Override                                                                 如果不调用toString方法则打印出来是地址值
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", xb='" + xb + '\'' +
+                '}';
+    }
+}
+***输出结果：Person{name='小刚', xb='男'}***
+            Person{name='xaio', xb='男'} 
+方式二：
+public static void main(String[] args) {
+        Person student2 = Person.Student2;
+        System.out.println(Person.Student2);
+    }
+}
+enum Person{
+    //提供枚举类的多个对象：public static final修饰可以省略
+     Student("小米","女"),
+     Student1("小红","女"),
+     Student2("小刚","男");
+    //声明对象的属性：private final修饰
+    private final String name;
+    private final String xb;
+    //私有化构造器，并给对象赋值
+    private Person(String name,String xb){                    此处必须私有化构造器，即enum类无法用new调用方法
+     this.name=name;
+     this.xb=xb;
+    }
+   //获取枚举对象的属性，并提供赋值器
+    public String getName() {
+        return name;
+    }
+    public String getXb() {
+        return xb;
+    }
+    //调用toString方法打印枚举属性                                   如果没有调用toString方法则打印出对象名
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", xb='" + xb + '\'' +
+                '}';
+    }
+}
+***输出结果：Person{name='小刚', xb='男'}***
+enum类继承java.lang.Enum，即enum类的父类是java.lang.Enum并不是object
+常用方法：toString、values、valuesof(String name )
+六、记录类
+ 不变类：String、包装类
+ 不变类特点：1、定义class时使用final修饰，无法派生子类
+            2、每个字段使用final修饰，保证创建实例后无法修改任何字段
+用record可以快速创建一个不可变类
+record Person(int a,int b){}     
+        | |
+final class Person {
+    private final int a;
+    private final int b;
+
+    Person(int a, int b) {
+        this.a = a;
+        this.b = b;
+    }
+
+    public int a() {
+        return a;
+    }
+
+    public int b() {
+        return b;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+        var that = (Person) obj;
+        return this.a == that.a &&
+                this.b == that.b;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(a, b);
+    }
+
+    @Override
+    public String toString() {
+        return "Person[" +
+                "a=" + a + ", " +
+                "b=" + b + ']';
+    }
+}
+我们仍可以在record中定义静态方法,经常是静态方法里的(of（）)
+七、常用工具类
+1、math类用于计算
+2、random用于获取随机数
