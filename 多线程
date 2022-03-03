@@ -1,0 +1,51 @@
+一、多线程基础
+ 程序：是为了完成特定任务、用某种语言编写的一组命令集合。即一段静态代码，静态对象
+ 进程：是一次程序的执行过程，或者正在运行的一个程序，是一个动态过程。有他自身的（产生、存在、消亡）生命周期，是资源的分配单位，系统在运行时会为每个进程分配不同的内存区域
+ 线程：是程序内部的一条执行路径，进程细分为线程。
+      一进程同一时间并行多个线程，就是支持多线程
+     线程作为调度和执行的单位，每个线程拥有独立的栈和程序计数器，线程切换开销小
+进程和线程的关系：一个进程可以包含多个线程，至少包含一个线程
+二、创建多线程
+ 方式一：从Thread派生一个自定义类，然后复写run()方法 (自定义一个继承与Thread的子类，复写run（）方法，在main()方法中调用子类的start()方法)
+    例子：
+public static void main(String[] args) {
+	// write your code here
+        Person p1=new Person();                   //实例自定义的子类
+        p1.start();                               //调用Thread的start()方法（启动Thread，即启动新线程）
+        int c=0;                                     /注意：start（）的作用： 
+        int d=100;                                          （1）启动当前线程
+        System.out.println(c+d);                            （2）调用当前线程的run（）方法
+       
+    }
+}
+class Person extends Thread{                     //自定义一个继承与Thread的子类
+    @Override                                    //覆写run（）方法
+    public void run() {
+        for (int a=0;a<=100;a++) {
+            if (a % 2 == 0) {
+                System.out.println(a);
+            }
+        }
+    }
+}
+注意：1、不可通过调用run（）方法来启动线程
+      2、已经start过的线程不能再次通过同一个对象start，即每个对象只能start一次
+ 方式二：实现Runable接口的方法
+ 例子：
+public static void main(String[] args) {
+	// write your code here
+          Test t1=new Test();                       //创建实现类的对象
+        Thread t2 = new Thread(t1);                 //将对象作为参数传入Thread类的构造器中，创建Thread类的对象 
+        t2.start();                                 //通过Thread类的对象调用start，启动线程。1、启动线程 2、调用当前线程的run()方法
+    }
+}
+class Test implements Runnable{                    //创建一个类并接口于Runable
+    @Override                                     //覆写run（）方法
+    public void run() {
+        for (int a=0;a<100;a++){
+            if (a%2==0){
+                System.out.println(a);
+            }
+        }
+    }
+}
