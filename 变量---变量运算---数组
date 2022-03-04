@@ -41,3 +41,4 @@
  Arrays. fill(int[]a,int val)  将指定值填充到数组中(数组中每个数替换成指定值)
  void sort(int[]a)对数组进行排序
  int binarySeearch(int[]a,int key) 对排序后的数组进行二分法检索指定值
+ 注意：如果是静态方法创建数组，则无法调用Arrays工具类
