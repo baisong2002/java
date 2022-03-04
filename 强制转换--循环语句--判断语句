@@ -112,13 +112,34 @@ braek和continue后不能跟语句。
 二、遍历数组
  1、可以使用for语句或者for each 语句遍历数组。
   /*例子： int[]ns=new int[2];
-           ns[0]=1;                                运用for语句正序打印数组ns,倒叙则将for循环改为：for(int i=ns.length;i>=0;i++){System.out.println(ns[i]);  }
+           ns[0]=1;                              
            ns[1]=2;
         for(int i=0;i<ns.length;i++){            i不可等于数组索引，若等于数组索引则超出索引范围
             System.out.println(ns[i]);
         }
    **输出结果：1,2 **
    简便写法：int []ns={1,2}
+   反转例子：
+      int []a={1,2,3};
+        for (int i=0;i<a.length/2;i++){
+             int c=a[i];
+             a[i]=a[a.length-1];
+             a[a.length-1]=c;
+        }
+        for (int i=0;i< a.length;i++) {
+            System.out.println(a[i]);
+        }
+    **输出结果：3,2,1****
+      int []a={1,2,3};
+       for (int i=0,j=a.length-1;i<j;i++,j--){
+            int f=a[i];
+            a[i]=a[j];
+            a[j]=f;
+        }
+        for (int i=0;i< a.length;i++) {
+            System.out.println(a[i]);
+        }
+     **输出结果：3,2,1****
         System.out.println(Arrays.toString(ns));  Arrays.toString()是JAVA提供的，可以快速打印数组。
     Arrays.toString()为打印数组，Arrays.sort()为数组按从小到大排序并输出。
  2、多维数组：
