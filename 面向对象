@@ -180,10 +180,15 @@ class Student extends Person{
 }
     输出结果：*****苍井空*****
 3、super：调用父类中被子类覆写的方法
+
 4、final修饰符
    final定义在方法前，则该方法无法被子类覆写
    final定义在类前，则该类无法被继承
    final修饰其他字段，则该字段初始化后无法被修改。可以在类中用构造器初始化final字段值
+   finial修饰引用类型，地址值不变，内容可以发生改变
+5、修饰符
+分类：权限修饰符：public、private、protected、默认
+     状态修饰符：static（静态）、final（最终态）
 六、抽象类
 意义：父类仅仅定义一个方法，目的是为让子类继承他，运用了多态性
   关键字：abstract
