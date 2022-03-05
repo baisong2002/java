@@ -144,3 +144,4 @@ NORM_PRIORITY:5
   getPriority():获取线程的优先级
   setPriority(int Priority):设置线程的优先级（要在start()之前）
 说明：高优先级抢占低优先级的cpu,但并不意味高优先级在执行完成后再执行低优先级
+五、实现Runnable接口
