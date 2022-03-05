@@ -194,35 +194,30 @@ class Student extends Person{
   关键字：abstract
   abstract声明方法，则该方法就是抽象方法，目的是为了子类继承并定义他。
   abstract声明一个类，则该类就是抽象类，无法实例化，即：
-package com.company;
+public static void main(String[] args) {
+       test2 t=new test2();
+       t.a();
+       t.b();
+    }
+}
+public abstract class test1 {
+    public abstract void a();
 
-public class Main {
+}
+public class test2 extends test1{
+    public  void b(){
+        System.out.println("你好");
+    }
 
-    public static void main(String[] args) {
-	// write your code here
-     Person p1=new Person() ;    //报错：请将abstract去掉
+    @Override
+    public void a() {
+        System.out.println("小王");
     }
 }
-abstract class Person{
-    public String name;
-    public int age;
-    public Person(String name,int age){
-        this.name=name;
-        this.age=age;
-    }
-   public String getName(){
-        return name;
-   }
-   public int getAge(){
-        return age;
-   }
-}
-class Student extends Person{
-    public Student(String name,int age){
-        super(name,age);
-    }
-    
-}
+****输出结果：你好小王****
+注意：抽象类不一定有抽象方法，但有抽象方法的一定是抽象类
+      抽象类不能直接实例化，但是可以借用多态的方式实例化
+      抽象类的子类要么重写抽象类的所有方法，要么变为抽象子类
 七、接口（interface）
    JAVA中接口和类是并列的两个结构
    定义接口的成员：
@@ -265,7 +260,25 @@ class Student implements Person{
       } 
     接口可以继承接口，而且可以多继承，相当于给接口扩展。
     接口比抽象类更抽象
-    接口可以定义defaul方法
+    接口可以定义defaul方法：
+例子：
+public static void main(String[] args) {
+          test2 t=new test2();
+          t.A();
+          t.B();
+    }
+interface  test1{
+    default void A(){
+         System.out.println("小王");
+    }
+
+}
+public class test2 implements test1{
+   public void B(){
+       System.out.println("你好");
+   }
+}
+
  接口的使用：
  1、接口使用上也满足了多态性
  2、接口实际上就是定义了一种规范
