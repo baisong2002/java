@@ -171,6 +171,7 @@ NORM_PRIORITY:5
 这种情况即使线程A出现了阻塞，也不能改变（JAVA同步机制）
 同步的方法：解决了线程安全问题  --->好处
            操作同步代码时只能有一个线程操作，其他线程等待。相当于单线程   --->局限性
+(1)解决实现Runnable接口线程安全问题：
       方式一：同步代码块
       synchronized（同步监视器）{
          //需要被同步的代码（操作共享数据的代码）
@@ -181,3 +182,106 @@ NORM_PRIORITY:5
                   补充：在实现Runnable接口创建多线程的方式中，我们可以考虑  使用this充当锁
                         在继承Thread创建多线程方式中，慎用this充当锁，可以使用当前类充当锁      
       方式二：同步方法
+         (1) 如果操作共享数据的代码正好完整的生明在一个方法中，我们就将这个方法同步
+          在方法中用synchronized修饰
+         public synchronized void a(){    //同步监视器：this
+                //共享数据
+         }
+
+      (2)如果操作共享数据的代码正好完整的生明在一个方法中，我们就将这个方法同步
+          在方法中用static和synchronized修饰
+         public static synchronized void a(){ //同步监视器：当前类
+                //共享数据
+         }
+    注意：
+       1、同步方法仍涉及到同步监视器，只是不需要我们声明
+       2、非静态的同步方法，同步监视器是：this
+          静态的同步方法，同步监视器是：当前类本身  
+2、死锁
+理解：不同线程分别占用对方需要的同步资源不放弃，都在等对方放弃自己需要的资源，形成死锁
+说明：
+    1） 出现死锁后不会出现异常，不会出现提示，只是所有的线程都处于阻塞状态，无法继续
+    2）使用同步时要避免出现死锁
+解决方法：
+     尽量少的使用同步资源
+     尽可能少的嵌套
+3、Lock（锁） --->jdk5.0新增
+*******************************************
+     Windows a = new Windows();
+
+    Thread t1 = new Thread(a);
+    Thread t2 = new Thread(a);
+    Thread t3 = new Thread(a);
+
+        t1.setName("窗口1");
+        t2.setName("窗口2");
+        t3.setName("窗口3");
+
+        t1.start();
+        t2.start();
+        t3.start();
+}
+}
+
+class Windows implements Runnable {
+    private int ticket = 100;
+    //1、实例化ReeReentrantLock
+    private ReentrantLock lock=new ReentrantLock(true);
+
+    @Override
+    public void run() {
+        while (true) {
+            try {
+                //2、调用锁定方法：lock();
+
+                lock.lock();
+
+
+                if (ticket > 0) {
+
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    System.out.println(Thread.currentThread().getName() + ":票号为：" + ticket);
+                    ticket--;
+                } else {
+                    break;
+                }
+            }finally {
+                //3、调用解锁方法：unlock();
+                lock.unlock();
+            }
+
+        }
+    }
+}
+*************************************************************
+synchronized和lock的异同：
+ 1、相同：二者都可以解锁
+    不同：synchronized机制在执行完相应的同步代码后，自动释放同步监视器
+         lock需要手动的启动同步（lock()）,同时结束同步也需要手动的实现（unlock()）
+    优先使用lock
+七、线程的通信
+wait():一旦执行此方法，当前线程就进入阻塞状态，并释放同步监视器
+notify():一旦执行此方法，就会唤醒被wait的一个线程。如果有多个线程被wait(),就唤醒优先级高的线程
+notifyAll():一旦执行此方法，就会唤醒被wait的所以线程。
+注意：
+1、wait(),notify(),notifyAll()三个方法必须使用在同步代码块中或同步方法中
+2、wait(),notify(),notifyAll()三个方法的调用者必须是同步代码块或同步监视器
+  否则会出现异常
+3、wait(),notify(),notifyAll()三个方法定义在Object类中
+4、sleep()和wait()的异同：
+    相同：一旦执行其方法都会让线程进入阻塞状态
+    不同：1）两个方法声明的位置不一样：Thread类中声明sleep(),Object类中声明wait()
+          2)调用的范围或者要求不同：sleep()可以在任何需要的场景下调用，wait()必须使用在同步代码块或者同步监视器中
+          3）关于是否释放同步监视器问题：
+                   如果两个方法都是用在同步代码块或者同步监视器中，sleep()不会释放同步监视器（锁），wait()会释放同步监视器（锁）
+八、新增创建线程方式
+1、实现Callable接口
+  Call()：可以有返回值
+  方法可以抛出异常
+  支持泛型的返回值
+  需借助FutureTask类
