@@ -7,6 +7,7 @@
 进程和线程的关系：一个进程可以包含多个线程，至少包含一个线程
 二、创建多线程
  方式一：从Thread派生一个自定义类，然后复写run()方法 (自定义一个继承与Thread的子类，复写run（）方法，在main()方法中调用子类的start()方法)
+*************************************************************************************************
     例子：
 public static void main(String[] args) {
 	// write your code here
@@ -28,9 +29,11 @@ class Person extends Thread{                     //自定义一个继承与Threa
         }
     }
 }
+********************************************************************************
 注意：1、不可通过调用run（）方法来启动线程
       2、已经start过的线程不能再次通过同一个对象start，即每个对象只能start一次
  方式二：实现Runable接口的方法
+ *****************************************************************************************
  例子：
 public static void main(String[] args) {
 	// write your code here
@@ -49,6 +52,7 @@ class Test implements Runnable{                    //创建一个类并接口于
         }
     }
 }
+*******************************************************************************
 两种创建线程的方式比较：
 继承Thread不好，接口Runable较好
 开发中优先选择实现Runnable方式
@@ -68,6 +72,7 @@ class Test implements Runnable{                    //创建一个类并接口于
 获取当前线程的名称
 5、setName()
 设置当前线程的名称
+********************************************************************************
 /*例子：
 public static void main(String[] args) {
 	// write your code here
@@ -92,6 +97,7 @@ class A extends Thread{
         }
     }
 }
+******************************************************************************
 6、yield()
 释放当前cpu的执行权
 7、join()
@@ -102,6 +108,7 @@ class A extends Thread{
 让当前线程“睡眠”millitime毫秒，在指定millitime毫秒内，当前线程是阻塞状态
 10、isAlive()
 判断线程是否还存活
+******************************************************************************
 public static void main(String[] args) {
 	// write your code here
         A a=new A();
@@ -141,6 +148,7 @@ class A extends Thread{
         }
     }
 }
+********************************************************************************
 四、线程优先级
 1、线程的优先等级
 MAX_PRIORITY:10
@@ -206,7 +214,7 @@ NORM_PRIORITY:5
      尽量少的使用同步资源
      尽可能少的嵌套
 3、Lock（锁） --->jdk5.0新增
-*******************************************
+*****************************************************************
      Windows a = new Windows();
 
     Thread t1 = new Thread(a);
@@ -280,8 +288,116 @@ notifyAll():一旦执行此方法，就会唤醒被wait的所以线程。
           3）关于是否释放同步监视器问题：
                    如果两个方法都是用在同步代码块或者同步监视器中，sleep()不会释放同步监视器（锁），wait()会释放同步监视器（锁）
 八、新增创建线程方式
-1、实现Callable接口
+一、实现Callable接口
   Call()：可以有返回值
   方法可以抛出异常
   支持泛型的返回值
   需借助FutureTask类
+2、Future接口：
+ 可以对具体Runnable、Callable任务的执行结果进行取消、查询是否完成
+ FutureTask是Future接口的唯一的实现类
+ FuntureTask同时实现了Runable、Future接口。它即可以作为Runable被线程执行，又可以作为Funture得到Callzble的返回值
+ 例子：
+ ******************************************************************************************************
+ //3、创建Callable接口实现类的对象
+        A a=new A();
+        //4、将此Callable接口实现类的对象作为参数传递到FutureTask构造器中，创建FutureTask的对象
+        FutureTask b = new FutureTask(a);
+        //5、将FutureTask的对象作为参数传递到Thread类的构造器中，创建Thread对象，并调用start()
+        new Thread(b).start();
+
+        try {
+            //6、获取Callable中call方法的返回值
+            //get()返回值即为FutureTask构造器参数Callbale实现类重写的call()返回值
+           Object sum= b.get();
+            System.out.println("总和为："+sum);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+}
+//1、创建一个实现Callable的实现类
+class A implements Callable{
+
+//2、实现Call方法，将此线程需要执行的操作声明在此方法中
+    @Override
+    public Object call() throws Exception {
+        int sum=0;
+        for (int i=1;i<=100;i++){
+            if (i%2==0){
+                System.out.println(i);
+                sum+=i;
+            }
+        }
+        return sum;
+    }
+*********************************************************************************************
+3、如何理解实现Callable接口的方式创建多线程比实现Runable接口创建多线程方式强大？
+（1）call()：可以有返回值
+（2）call()可以抛出异常，被外面的操作捕获，获取异常信息
+（3）Callable是支持泛型
+二、使用线程池
+理解：提前创建好多个线程，放入线程池，使用时直接获取，使用完放回池中，可以避免频繁创建销毁、实现重复利用
+好处：
+  提高响应速度（减少了创建新线程的时间）
+  降低了资源消耗
+  便于管理：
+    corePoolSize:核心池的大小
+    maximumPoolSize:最大线程数
+    keepAliveTime:线程没有任务时最多保持多长时间后终止
+创建线程池方法：
+ExecutorService接口：
+  真正的线程池接口。常见子类ThreadPoolExecutor
+  void execute(Runnable command):执行任务/命令，没有返回值，一般用来执行Runable
+  <T>Future<T>submit(Callable<T>task):执行任务，有返回值，一般用来执行Callable
+  void shutdown():关闭连接池
+Executors：工具类、多线程的工厂类，用于创建并返回不同类型的线程池
+  Executors.newCachedThreadPool():创建一个可根据需要创建新线程的线程池
+  Executors.newFixedThreadPool():创建一个可重用固定线程数的线程池
+  Executors.newSingeThreadExecutor():创建一个只有一个线程的线程池
+  Executors.newScheduledThreaadPool():创建一个线程池，它可以安排在给定延迟后运行命令或定期地执行
+  *****************************************************************************************
+  例子：
+       //1、提供线程数量的线程池
+        ExecutorService a = Executors.newFixedThreadPool(10);
+/*
+        ThreadPoolExecutor b=(ThreadPoolExecutor)a;
+        //设置线程池的属性
+       //  System.out.println(a.getClass());
+        b.setCorePoolSize(15);
+
+ */
+        //2、执行指定线程的操作，需要提供实现Runnable接口或Callable接口实现类的对象
+        //a.submit();//适合使用于Callable
+        a.execute(new A1());//适合使用于Runnable
+        a.execute(new A());
+        //3、关闭线程池
+        a.shutdown();
+    }
+}
+
+class A1 implements Runnable {
+    @Override
+    public void run() {
+        for (int i = 0; i <= 100; i++) {
+            if (i % 2 == 0) {
+                System.out.println(Thread.currentThread().getName() + i);
+            }
+        }
+    }
+}
+class A implements Runnable {
+    @Override
+    public void run() {
+        for (int i = 0; i <= 100; i++) {
+            if (i % 2 != 0) {
+                System.out.println(Thread.currentThread().getName() + i);
+            }
+        }
+    }
+}
+***************************************************************************************************
