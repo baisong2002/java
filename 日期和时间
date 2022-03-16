@@ -1,4 +1,10 @@
- /*
+一、JDK8之前
+1、System类
+        //System类中的curentTimeMillis()
+        long time = System.currentTimeMillis();
+        //返回当前时间与1971年1月1日0时0分0秒之间以毫秒为单位的时间差（时间戳）
+        System.out.println(time);
+ 2、两个Date类
          java.util.Date类
                /---java.aql.Date类
           1、两个构造器的使用
@@ -8,7 +14,6 @@
            3、java.sql.Date():数据库的时间类型变量
              >如何实例化
              >sql.Date对象--->until.Date对象
-         */
         //构造器一：Date():创建了一个对应当前时间的Date对象
         Date a = new Date();
         System.out.println(a.toString());
@@ -28,3 +33,28 @@
         //方式二：
         Date a5 = new Date();
         java.sql.Date a6= new java.sql.Date(a5.getTime());
+3、java.textSimpleDateFormat类
+        使用：对日期Date的格式化和解析
+         1、两个操作
+         >格式化：日期--->字符串
+         >解析： 字符串--->日期
+         2、SimpleDateFormat格式化
+        //实例化：使用默认的构造器
+        SimpleDateFormat a = new SimpleDateFormat();
+        //格式化：日期--->字符串
+        Date b = new Date();
+        System.out.println(b);
+        String c = a.format(b);
+        System.out.println(c);
+       //解析： 字符串--->日期
+        String s="2022/3/16 下午9:56";
+        Date d = a.parse(s);
+        System.out.println(d);
+        //********按照指定方式格式化和解析：调用带参的构造器**********
+        SimpleDateFormat e = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        //格式化
+        String b1 = e.format(b);
+        System.out.println(b1);
+        //解析
+        Date a1 = e.parse("2020-12-02 12:25:25");
+        System.out.println(a1);：
