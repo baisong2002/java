@@ -1,0 +1,30 @@
+ /*
+         java.util.Date类
+               /---java.aql.Date类
+          1、两个构造器的使用
+          2、两个方法的使用
+             >toString():显示当前的年、月、日、时、分、秒
+             >getTime():返回当前时间与1971年1月1日0时0分0秒之间以毫秒为单位的时间差（时间戳）
+           3、java.sql.Date():数据库的时间类型变量
+             >如何实例化
+             >sql.Date对象--->until.Date对象
+         */
+        //构造器一：Date():创建了一个对应当前时间的Date对象
+        Date a = new Date();
+        System.out.println(a.toString());
+        System.out.println(a.getTime());
+        //构造器二：创建指定毫秒数的Date对象
+        Date a1 = new Date(1647433794006L);
+        System.out.println(a1.toString());
+
+        java.sql.Date a2 = new java.sql.Date(1647433794006L);
+        System.out.println(a);
+
+        //sql.Date对象--->until.Date对象
+        //方式一：
+        java.sql.Date a3 = new java.sql.Date(1647433794006L);
+        java.sql.Date a4= (java.sql.Date) a3;
+        
+        //方式二：
+        Date a5 = new Date();
+        java.sql.Date a6= new java.sql.Date(a5.getTime());
