@@ -57,4 +57,111 @@
         System.out.println(b1);
         //解析
         Date a1 = e.parse("2020-12-02 12:25:25");
-        System.out.println(a1);：
+        System.out.println(a1);
+4、Calendar日历类(抽象类)
+  //1、实例化
+        //方式一：创建其子类（GregorianCalendar)的对象
+        //方式二：调用其静态方法getInstance()
+        Calendar a = Calendar.getInstance();
+        System.out.println(a.getClass());
+
+        //常用方法：
+        //get()
+        int b = a.get(Calendar.DAY_OF_MONTH);
+        System.out.println(b);
+        //set()
+        a.set(Calendar.DAY_OF_MONTH,20);
+        b=a.get(Calendar.DAY_OF_MONTH);
+        System.out.println(b);
+        //add()
+        a.add(Calendar.DAY_OF_MONTH,3);
+        b=a.get(Calendar.DAY_OF_MONTH);
+        System.out.println(b);
+        //geTime():日历类--->Date()
+        Date c = a.getTime();
+        System.out.println(c);
+        //setTime():Date()--->日历类
+        Date d=new Date();
+        a.setTime(d);
+        b=a.get(Calendar.DAY_OF_MONTH);
+        System.out.println(b);  
+获取月份时：一月时0，二月时1.。。。
+获取星期时：周日时1，周二时2.。。。
+可变的、偏移性、格式化、线程不安全
+二、jdk8当中的时间API
+ 1、LocalDate、LocalTime、LocalDateTime
+ 类似于Calendar
+    //LocalDate、LocalTime、LocaDateTime
+       //1、实例化now():获取当前时间、日期
+       LocalDate a = LocalDate.now();
+       LocalTime b = LocalTime.now();
+       LocalDateTime c = LocalDateTime.now();
+       System.out.println(a);
+       System.out.println(b);
+       System.out.println(c);
+      /* 2022-03-19
+       14:20:19.782354500
+       2022-03-19T14:20:19.782354500
+       */
+       //of():设置指定的年月日时分秒。没有偏移量
+       LocalDateTime a1 = LocalDateTime.of(2002, 11, 02, 13, 23, 43);
+       System.out.println(a1);//2002-11-02T13:23:43
+       //getxxx():获取对应的值
+       System.out.println(c.getMonth());//MARCH
+       System.out.println(c.getDayOfMonth());//19
+       System.out.println(c.getDayOfWeek());// SATURDAY
+       System.out.println(c.getMonthValue());//3
+       System.out.println(c.getMinute());//26
+       //Local体现不可变性
+       //withXxx():设置相关属性
+       LocalDateTime c1 = c.withDayOfMonth(22);
+       System.out.println(c1);//2022-03-22T14:30:47.479623300
+       System.out.println(c);//
+
+       LocalDateTime c2 = c.withDayOfYear(1);
+       System.out.println(c2);//2022-01-01T14:32:18.213382400
+       //plus():增加
+       LocalDateTime c3 = c.plusMonths(3);
+       System.out.println(c3);
+        //mius():减少
+       LocalDateTime c4 = c.minusMonths(3);
+       System.out.println(c4);
+2、Instant（瞬时）
+ 理解：时间线上的一个瞬时点。从1970年开始
+     //now():获取（以本初子午线为标准）的时间
+       Instant a = Instant.now();
+       System.out.println(a);//2022-03-19T06:39:18.742616800Z
+       //添加时间偏移量
+       OffsetDateTime b = a.atOffset(ZoneOffset.ofHours(8));
+       System.out.println(b);//2022-03-19T14:43:24.406449500+08:00
+       //toEpochMilli:获取自1970年1yue1日0时0分0秒开始的毫秒数
+       long a1 = a.toEpochMilli();
+       System.out.println(a1);//1647672393608
+       //ofEpochMilli():通过给定的毫秒数，获取Instant实例 ---->Date类中的get
+       Instant d = Instant.ofEpochMilli(1647672393608L);
+       System.out.println(d);
+3、DateTimeFormatter
+格式化或解析时间，类似于SimpleDateFormat
+提供了三种格式化方法
+   //格式化方式一：（预定义）
+      DateTimeFormatter a=DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+      //格式化：日期---->字符串
+       LocalDateTime b = LocalDateTime.now();
+       System.out.println(a.format(b));//2022-03-19T14:57:21.1090532
+       System.out.println(b);//2022-03-19T14:57:21.109053200
+      //解析：字符串--->日期
+       System.out.println(a.parse("2022-03-19T14:57:21.109053200"));
+       //{},ISO resolved to 2022-03-19T14:57:21.109053200
+       //方式二：
+     DateTimeFormatter a1 = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT);
+       //格式化：
+       String b1 = a1.format(b);
+       System.out.println(b1);//2022/3/19 下午3:03
+       //方式三：自定义
+       DateTimeFormatter n = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+      //格式化
+       String z = n.format(b);
+       System.out.println(z);//2022-03-19
+       //解析
+       TemporalAccessor n1 = n.parse("2022-03-19");
+       System.out.println(n1);
