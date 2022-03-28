@@ -17,7 +17,7 @@ Myaql数据库的SQL语句不区分大小写，关键字建议使用大写
      DROP DATABASE[IF EXISTS(如果存在则删除)]数据库名：删除数据库
      USE 数据库名：使用数据库
   2、表操作-查询
-    SHOW TABLES：查询当前数据库所有表
+    SHOW TABLES：查询当前数据库所有表名称
     DESC表名：查询表结构
     SHOW CREATE TABLE 表名：查询指定表的建表语句
    3、表操作-：创建
@@ -27,3 +27,25 @@ Myaql数据库的SQL语句不区分大小写，关键字建议使用大写
         字段n  类型[（宽度）]  [约束条件]  [COMMENT 字段1注释],
     }[COMMENT 表注释];
     注意[.....]为可选参数，最后一个字段后面没有都好
+    4、删除表：
+         dro table 表明；
+    5、修改表添加列
+      alter table 表明 add列名 类型（长度）[约束];
+    6、修改列名和类型
+      alter table 表名 change 旧列名 类型（长度）约束;
+    7、修改表/删除列：
+     alter table 表明 drop 列名；
+    8、修改表明：
+    rename table 表明 to 新表名;
+三、数据类型
+   数值类型：INT/INTEGER 整数
+            FLOAT        单精  浮点型
+            DOUBLE       双精  浮点型
+            DECIMAL       小数值
+   字符串类型：CHAR  定长字符串
+              VARCHAR()  变长字符串
+    日期类型：DATE   YYYY-MM-DD   日期值
+             TIME    HH:MM:SS    时间值（时分秒）
+             YEAR     YYYY        年份值
+             DATETIME   YYYY-MM-DD HH:MM:SS 混合日期值
+             TIMESTAMP   YYYYMMDD HHMMSS    时间戳  
