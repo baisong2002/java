@@ -21,9 +21,9 @@ Myaql数据库的SQL语句不区分大小写，关键字建议使用大写
     DESC表名：查询表结构
     SHOW CREATE TABLE 表名：查询指定表的建表语句
    3、表操作-：创建
-    CREATE TABLE 表名{
-        字段1 字段1类型[COMMENT 字段1注释],
+    CREATE TABLE [if not extists] 表名{
+        字段1  类型[（宽度）]  [约束条件]  [COMMENT 字段1注释],
         .......
-        字段n 字段n类型[COMMENT 字段n注释]
-    }[COMMENT 表注释]
+        字段n  类型[（宽度）]  [约束条件]  [COMMENT 字段1注释],
+    }[COMMENT 表注释];
     注意[.....]为可选参数，最后一个字段后面没有都好
