@@ -73,17 +73,16 @@
             System.out.println("删除成功！！！");
         }
 ****************************************************
-        //文件夹目录的创建
-        File file1 = new File("d:\\io\\io1\\io3");
-        boolean a = file1.mkdir();//创建文件目录，若此文件目录存在，就不创建了。如果此文件目录的上层目录不存在，也不创建
-        if (a){
-            System.out.println("创建成功！！");
+      File file = new File("D:\\IO\\io1");
+        File file1 = new File(file.getParent(), "haha.txt");
+        boolean a = file1.createNewFile();
+        if (a) {
+            System.out.println("创建成功");
         }
-        File file2 = new File("d:\\io\\io1\\io4");
-        boolean a1 = file2.mkdirs();//创建文件目录，如果上层目录不存在，一并创建
-        if (a1){
-            System.out.println("创建成功！！");
-        }
+        File file2 = new File("D:\\IO\\io1\\io4");
+        System.out.println(file2.delete());//删除文目录
+    }
+    ***要想删除成功，文件目录下不能有文件*****
 *****************************************************************************************************
 file类涉及到关于文件或文件目录的创建、删除、重命名、修改时间、文件大小等
 并未涉及到写入或读取文件内容的操作。如果需要读取或写入文件内容，必须使用IO流来完成
