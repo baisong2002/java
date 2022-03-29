@@ -16,5 +16,37 @@
   其他子类都以上述四个抽象基础类为后缀 
 二、File流（文件流）节点流
 1、FileReader(字符流)
- 
+***************************************************************************
+         FileReader fr=null;
+        try {
+         /*
+        将hello.txt文件内容读入程序，并控制输出到控制台
+         */
+            //实例化File类的对象，指明要操作的文件
+            File file = new File("hello.txt");
+            System.out.println(file.getPath());
+            //提供具体的流
+           fr = new FileReader(file);
+            //数据的读入过程
+            //read():返回一个字符，如果达到末尾，返回-1
+            int date = fr.read();
+            while (date != -1) {
+                System.out.print((char) date);
+                date = fr.read();
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }finally {
+            try{
+                if (fr!=null)
+                //4、流的关闭操作
+                fr.close();
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+********************************************************************************
+read()的理解：返回读入的一个字符。如果达到文件末尾，返回-1
+异常的处理：为了保证流的资源一定可以执行关闭操作。需要使用try-catch-finally处理
+读入的文件一定要存在否则就会报异常
 三、缓冲流（处理流的一种）
