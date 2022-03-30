@@ -9,8 +9,8 @@ Myaql数据库的SQL语句不区分大小写，关键字建议使用大写
  DML语句：数据库操作语言，用来对数据库表中的数据进行增删改
  DQL语句：数据库查询语句，用来查询数据库中表的记录
  DCL语句：数据库控制语言，用来创建数据库用户、控制数据库的访问权限
- 1、DDL：
-   数据库：
+ （一）DDL：
+  1、 数据库：
      SHOW DATABASES：查询所有数据库
      SELECT DATABASE():查询当前数据库
      CREATE DATABASE[IF NOT EXISTS （如果这个数据库不存在则创建，如果存在则不创建）]数据库名[DEFAULT CHARSET 字符集][COLLATE 排序规则]：创建数据库
@@ -20,23 +20,55 @@ Myaql数据库的SQL语句不区分大小写，关键字建议使用大写
     SHOW TABLES：查询当前数据库所有表名称
     DESC表名：查询表结构
     SHOW CREATE TABLE 表名：查询指定表的建表语句
-   3、表操作-：创建
+   表操作-：创建
     CREATE TABLE [if not extists] 表名{
         字段1  类型[（宽度）]  [约束条件]  [COMMENT 字段1注释],
         .......
         字段n  类型[（宽度）]  [约束条件]  [COMMENT 字段1注释],
     }[COMMENT 表注释];
     注意[.....]为可选参数，最后一个字段后面没有都好
-    4、删除表：
+    删除表：
          dro table 表明；
-    5、修改表添加列
+         truncate table 表名；(删除表后再创建一个同名的表（初始化）)
+    3、修改表添加列
       alter table 表明 add列名 类型（长度）[约束];
-    6、修改列名和类型
+    修改列名和类型
       alter table 表名 change 旧列名 类型（长度）约束;
-    7、修改表/删除列：
-     alter table 表明 drop 列名；
-    8、修改表明：
-    rename table 表明 to 新表名;
+    修改表/删除列：
+     alter table 表名 drop 列名；
+    修改表名：
+    alter table 表名  rename to 新表名;
+    修改字段类型：
+    TABLE 表名 MODIFY 字段名 新数据类型（长度）;
+    修改字段名和字段类型：
+     ALTAER TABLE 表名 CHANGE 旧字段名 新字段名 类型（长度） [COMMENT注释][约束];
+（二）DML：
+ insert:增加、添加、插入数据
+ update:修改数据
+ delete:删除语句
+ 1、insert：
+  给指定字段(列)添加数据：
+     intsert into 表名(字段1,字段名2,...) values(值1,值2,...);
+  给全部字段添加数据：
+     insert into 表名 values(值1,值2..);
+  批量添加数据：
+     (指定字段)insert into 表名(字段名1,字段名2..) values(值1,值2..),(值1,值2..),(值1,值2..);
+     (所有字段)insert into 表名 values (值1,值2,..),(值1,值2,..),(值1,值2,..);
+2、update:
+ 修改字段值
+     update 表名 set 字段名1=值1,字段名2=值2,...[where 条件];
+ 删除数据：
+     delete from 表明 [where 条件];
+(三)DQL
+     SELECT（关键字）
+1、基本查询：
+    （1）查询多个字段
+        select 字段1,字段2,..from 表名;
+        select*表名;
+      (2)设置别名：
+         select 字段1,[AS 别名1],字段2[AS 别名2]..from 表名;
+       (3)去除重复查询
+          select distinct 字段列表 from 表名; 
 三、数据类型
    数值类型：INT/INTEGER 整数
             FLOAT        单精  浮点型
