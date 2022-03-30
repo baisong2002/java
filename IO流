@@ -49,4 +49,56 @@
 read()的理解：返回读入的一个字符。如果达到文件末尾，返回-1
 异常的处理：为了保证流的资源一定可以执行关闭操作。需要使用try-catch-finally处理
 读入的文件一定要存在否则就会报异常
+**********************************************************************************
+   //1、File类的实例化
+        File a = new File("hello.txt");
+        //2、FileRead流的实例化
+        FileReader b = null;
+        try {
+            b = new FileReader(a);
+            //3、读入操作
+            //read(read[] cbuf):返回每次读入cbuf数组中的字符的个数。如果达到文件末尾，返回-1
+            char[] c = new char[5];
+            int d;
+            while ((d = b.read(c)) != -1) {
+                //方式一：
+                for (int i = 0; i < d; i++) {
+                    System.out.println(c[i]);
+                }
+                
+                String str=new String(c,0,d);
+                System.out.print(str);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (b != null) {
+                //4、资源的关闭
+                try {
+                    b.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+*************************************************************************
+2、FileWrite输入
+注意：
+   1、输出对应的File可以不存在。并不会报异常
+         如果不存在，在输出会自动创建
+         如果存在:
+             如果流使用的构造器是：FileWrite(file,false)/FileWrite(file):对原有文件覆盖
+              如果流使用的构造器是：FileWrite(file,true)/FileWrite(file):不会对与哪有文件覆盖，而是在原有文件基础上追加内容
+***************************************************************************
+//1、提供File类的文件：指明写出到的文件
+        File a = new File("hello1.txt");
+        //2、提供FileWriter的对象，用于数据写入
+        FileWriter b = new FileWriter(a,false);
+        //3、写入操作
+       b.write("I have a dream!\n");
+       b.write("You need to have a dream!");
+        //4、流资源的关闭
+        b.close();
+************************************************************************
+
 三、缓冲流（处理流的一种）
