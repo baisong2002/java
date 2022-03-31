@@ -14,6 +14,12 @@
  输入流：     InpuStream      Reader
  输出流：     OutputStream    Writer  
   其他子类都以上述四个抽象基础类为后缀 
+基本用法：
+1、创造文件
+2、创造流（根据自身需求选择流）
+3、输出和输入操作
+4、关流
+5、使用try-cath-finally异常处理
 二、File流（文件流）节点流
 1、FileReader(字符流)
 ***************************************************************************
@@ -90,15 +96,103 @@ read()的理解：返回读入的一个字符。如果达到文件末尾，返�
              如果流使用的构造器是：FileWrite(file,false)/FileWrite(file):对原有文件覆盖
               如果流使用的构造器是：FileWrite(file,true)/FileWrite(file):不会对与哪有文件覆盖，而是在原有文件基础上追加内容
 ***************************************************************************
-//1、提供File类的文件：指明写出到的文件
-        File a = new File("hello1.txt");
-        //2、提供FileWriter的对象，用于数据写入
-        FileWriter b = new FileWriter(a,false);
-        //3、写入操作
-       b.write("I have a dream!\n");
-       b.write("You need to have a dream!");
-        //4、流资源的关闭
-        b.close();
-************************************************************************
+           FileWriter b=null;
+        try  {
+            //1、提供File类的文件：指明写出到的文件
+           File  a = new File("hello1.txt");
+            //2、提供FileWriter的对象，用于数据写入
+            b = new FileWriter(a, false);
+            //3、写入操作
+            b.write("I have a dream!\n");
+            b.write("You need to have a dream!");
 
+        }catch (IOException e){
+            e.printStackTrace();
+        }finally {
+            //4、流资源的关闭
+            if (b!=null) {
+
+                try {
+                    b.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+************************************************************************
+3、文件复制
+*************************************************************************
+ FileReader a1 = null;
+        FileWriter b1 =null;
+        try {
+            //1、创建File类对象，指明读入和写出文件
+            File a = new File("hello.txt");
+            File b = new File("hello2.txt");
+            //2、创建输入和输出流的对象
+            a1 = new FileReader(a);
+            b1 = new FileWriter(b);
+            //3、数据的读入和写出操作
+            char[]c =new char[5];
+            int len;
+            while ((len=a1.read(c))!=-1){
+                b1.write(c,0,len);
+            }
+        }catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            //4、关闭资源
+            try {
+                a1.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                b1.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+**********************************************************************************        
+文本文件（.txt，.java等 ）使用字符流
+非文本文件（.jpg,.mp3等），使用字节流处理
+不能使用字符流来处理图片等数据，要想处理图片片要用字节流
+不能使用字节流来处理字符等数据，否则会出现乱码
+4、FileInputeStream和FileOutputeStream
+*********************************************
+复制图片（输入、输出图片）
+    FileInputStream a1 = null;
+        FileOutputStream b1 = null;
+        try {
+            //创建文件
+            File a = new File("R-C.jfif");
+            File b = new File("R1.jfif");
+            //创建流
+            a1=new FileInputStream(a);
+            b1 = new FileOutputStream(b);
+            //复制
+            byte[]c=new byte[5];
+            int len;
+            while ((len=a1.read(c))!=-1){
+                b1.write(c,0,len);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            //关流
+            if (a1!=null) {
+                try {
+                    a1.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (b1!=null) {
+                try {
+                    b1.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+**********************************************  
 三、缓冲流（处理流的一种）
