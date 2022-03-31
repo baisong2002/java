@@ -69,6 +69,19 @@ Myaql数据库的SQL语句不区分大小写，关键字建议使用大写
          select 字段1,[AS 别名1],字段2[AS 别名2]..from 表名;
        (3)去除重复查询
           select distinct 字段列表 from 表名; 
+2、条件查询
+      select 字段列表 from 表名 where 条件列表;
+    条件：
+      比较运算符：
+      between .. and ..    在某个范围之内
+      in(...)   在in之后的列表中的值，多选一
+      like 占位符   模糊匹配(_匹配单个字符，%匹配任意个字符)
+      is null 是null
+      <>/!=   不等于
+      逻辑运算符
+          and/&&   与
+          or/||    或
+          not/!    非/不是
 三、数据类型
    数值类型：INT/INTEGER 整数
             FLOAT        单精  浮点型
