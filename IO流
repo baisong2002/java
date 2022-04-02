@@ -196,3 +196,114 @@ read()的理解：返回读入的一个字符。如果达到文件末尾，返�
         }
 **********************************************  
 三、缓冲流（处理流的一种）
+ （一）Buffered
+ BufferedInput
+ BuffrerdOutput
+ BufferedRead
+ BufferedWrite
+ 作用：提高流的读取和写入的速度
+       提高读写速度的原因：内部提供了一个缓冲区
+       flush():刷新缓冲区
+“套接”在已有的流之上
+ ****************************************************
+ 1、非文本文件复制
+    //造文件
+        File file = new File("R-C.jfif");
+        File file1 = new File("R-C1.jfif");
+        //造流
+        FileInputStream fis = null;
+        FileOutputStream fis1 = null;
+        BufferedInputStream a = null;
+        BufferedOutputStream a1 = null;
+        try {
+            fis = new FileInputStream(file);
+            fis1 = new FileOutputStream(file1);
+            //造处理流（缓冲流）
+            a = new BufferedInputStream(fis);
+            a1 = new BufferedOutputStream(fis1);
+            //复制的细节：读取和写入的过程
+            byte[] b = new byte[5];
+            int len;
+            while ((len = a.read(b)) != -1) {
+                a1.write(b, 0, len);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (a != null) {
+                //关流:要求：先关闭外层的流，再关内层
+                try {
+                    a.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                //说明：关闭外层流的同时，内层流也进行关闭，内层流的关闭可以不用管
+            }
+            if (a1 != null) {
+                try {
+                    a1.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+************************************************************************************* 
+        BufferedReader a = null;
+        BufferedWriter a1 = null;
+        try {
+            a = new BufferedReader(new FileReader(new File("hello.txt")));
+            a1 = new BufferedWriter(new FileWriter(new File("hello3.txt")));
+            /*方式一
+            char[]b=new char[1024];
+            int len;
+            while ((len=a.read(b))!=-1){
+                a1.write(b,0,len);
+            }
+             */
+            //方式二
+           String b;
+           while ((b=a.readLine())!=null){
+               //方法一;
+               a1.write(b+"\n");//b不包含换行符
+               //方法二
+               a1.write(b);
+               a1.newLine();//提供换行的服务
+           }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            if (a!=null) {
+                a.close();
+            }
+            if (a1!=null) {
+                a1.close();
+            }
+        }
+*************************************************************************  
+四、转换流（处理流的一种）
+ 字节流和字符流之间的转换
+ InputStreamReader(字符流)：将一个字节的输入流转换为字符的输入流/解码
+ OutputStreamWrite(字符流)：将一个字符的输出流转换为字节的输出流/编码
+ 字符集：具体使用哪个字符集，取决于文件存储时使用的字符集
+ *********************************************************************
+  FileInputStream a = new FileInputStream("hello.txt");
+        InputStreamReader a1 = new InputStreamReader(a);
+         char[]b=new char[20];
+         int len;
+         while ((len=a1.read(b))!=-1){
+             String s = new String(b, 0, len);
+             System.out.println(s);
+         }
+         a1.close();
+*************************************************************************
+ FileInputStream b = new FileInputStream("hello.txt");
+        FileOutputStream b1 = new FileOutputStream("hello-gbk.txt");
+        InputStreamReader c = new InputStreamReader(b);
+        OutputStreamWriter c1 = new OutputStreamWriter(b1,"gbk");
+         char[]d=new char[10];
+         int len;
+         while ((len=c.read(d))!=-1){
+             c1.write(d,0,len);
+         }
+         c.close();
+         c1.close();
+***************************************************************************
