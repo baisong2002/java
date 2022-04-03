@@ -307,3 +307,52 @@ read()的理解：返回读入的一个字符。如果达到文件末尾，返�
          c.close();
          c1.close();
 ***************************************************************************
+五、其他流
+输入输出流
+System.in:标准的输入流，从键盘输入
+System.out:标准的输出流,从控制台输出
+System类的setIn(InputStream is )/SetOut(OutputStream is)方式重新指定输入输出流
+************************************************************************************
+InputStreamReader a = new InputStreamReader(System.in);
+            BufferedReader a1 = new BufferedReader(a);
+
+            while (true) {
+                System.out.println("请输入字符串：");
+                String b = a1.readLine();
+                if (b.equalsIgnoreCase("e") || b.equalsIgnoreCase("exit")) {
+                    System.out.println("程序结束！！");
+                    break;
+                }
+                String c = b.toUpperCase();
+                System.out.println(c);
+                a1.close();
+        }
+*******************************************************************************************
+打印流：
+PrintStream  PintWriter
+基本数据类型---->字符串
+数据流：
+DateInputStream DateOutputStream
+操作java语言的基本数据类型和String
+将数据持久化到文件中/将文件写出到内存中
+读取顺序要和写入顺序一致
+******************************************************************************************
+ @Test
+    public void A() throws IOException {
+        DataOutputStream a = new DataOutputStream(new FileOutputStream("data.txt"));
+        a.writeUTF("薛浩然");
+        a.flush();
+        a.write(20);
+        a.flush();
+        a.close();
+    }
+    @Test
+    public void B() throws IOException {
+        DataInputStream a = new DataInputStream(new FileInputStream("data.txt"));
+        String b = a.readUTF();
+        int b1=a.read();
+        System.out.println(b+b1);
+        a.close();
+
+    }
+*****************************************************************************************************
