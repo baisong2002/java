@@ -84,6 +84,55 @@ Myaql数据库的SQL语句不区分大小写，关键字建议使用大写
           not/!    非/不是
 3、聚合函数：
 将一列数据作为一个整体，进行纵向
+count:统计数量
+max:最大函数
+min:最小函数
+avg：平均值
+sum：求和
+select 聚合函数(字段列表) from表名;
+4、分组查询：
+select 字段列表 from 表名 [where 条件] group by分组字段名 [having 分组后过滤条件];
+where 和having区别：
+执行时机不同：where是分组前进行过滤，不满足where条件，不参与分组；而having是分组后对结果进行过滤
+判断条件不同：where不能对聚合函数进行判断，而having可以；
+查询字段一般为聚合字段和分组字段，查询其他字段无任何意义
+5、排序查询
+select 字段名 from 表名 order by 字段1 排序方式1,字段2 排序方式2;
+排序方式：
+asc：升序(默认值)
+desc:降序
+6、分页查询
+select 字段列表 from 表名 limit 起始索引,查询记录数;
+起始索引：从0开始，其实索引=(查询页码-1)*每页记录数
+第一页可以省略 简写limit10
+(四)DCL
+用户管理：
+  (1)查询用户：use mysql;
+      select*from user;
+   (2)创建用户：
+         create user '用户名'@'主机名' identified by '密码';
+    本机：localhost
+    任意主机：%
+    (3)修改用户密码
+         alter user '用户名'@'主机名' identified with mysql_native_password by '新密码';
+    (4)删除用户
+         drop user'用户名'@'主机名';
+权限控制：
+    所有权限    all,all privileges
+    查询权限    select
+    查询权限     insert
+    修改数据     update  
+    删除数据     delecte
+    修改表       alter
+    删除数据库/表/视图   drop
+    创建数据库/表    create
+ 查询权限：
+    show grants for '用户名'@'主机名';
+  授予权限:
+    grant 权限列表 on 数据库名.表名 to '用户名'@'主机名';
+   撤销权限
+     revoke 权限列表 on 数据库名.表名 from '用户名'@'主机名';
+     
 三、数据类型
    数值类型：INT/INTEGER 整数
             FLOAT        单精  浮点型
