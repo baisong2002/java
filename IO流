@@ -449,4 +449,74 @@ DateInputStream DateOutputStream
             }
         }
     }
-************************************************************************************             
+************************************************************************************  
+七、随机存储文件流   
+直接继承object  即可输入又可输出    实现了DataInput DataOutput接口
+mode参数：
+  r:只读文件
+  rw：打开以便读取和写入
+  rwd：打开以便读取和写入，同步更新文件的内容
+  rws：打开以便读取和写入，同步更新文件内容和元数据内容 
+  如果  RandomAccessFile作为输出流出时，写出到的文件如果不存在，则在执行过程中自动创建
+          如果文件存在， 则会对原有文件内容进行覆盖。(默认从头覆盖) 
+***************************************************************************************************
+ @Test
+    public void A() {
+        RandomAccessFile a = null;
+        RandomAccessFile a1 = null;
+        try {
+            a = new RandomAccessFile(new File("hello.txt"), "r");
+            a1 = new RandomAccessFile(new File("hello1.txt"), "rw");
+            byte[] b = new byte[1024];
+            int len;
+            while ((len = a.read(b)) != -1) {
+                a1.write(b, 0, len);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (a != null) {
+                try {
+                    a.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (a1 != null) {
+                try {
+                    a1.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    @Test
+    public void B() throws IOException {
+        RandomAccessFile a = new RandomAccessFile("hello.txt", "rw");
+        a.write("xyz".getBytes());
+        a.close();
+    }
+}
+*******************************************************************************************
+ /*
+    使用RandomAccessFile实现数据插入效果
+     */
+    @Test
+    public void C() throws IOException {
+        RandomAccessFile a = new RandomAccessFile("hello1.txt", "rw");
+        a.seek(2);//将指针调到角标为2的位置
+        //保存指针2后面的所有数据到StringBuffder中
+        StringBuilder c = new StringBuilder((int) new File("hello1.txt").length());
+        byte[] b = new byte[20];
+        int len;
+        while ((len = a.read(b)) != -1) {
+            c.append(new String(b, 0, len));
+        }
+        //调回指针，写入数据
+        a.seek(2);
+        a.write("xyz".getBytes());
+        //将StringBuffer文件中的数据写入到文件中
+        a.write(c.toString().getBytes());
+    }
+************************************************************************************************************
