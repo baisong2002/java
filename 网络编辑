@@ -1,0 +1,200 @@
+网络编程概述：
+  java提供的网络类库，可以实现无痛的网络连接，联网的底层细节被隐藏在java的本机安装系统里，有JVM控制。
+  并且java实现了一个跨平台的网络库，程序员面对的是一个统一的网络编程环境
+目的：直接或间接地通过网络协议与其他计算机实现数据交换，进行通讯
+一、要素1：
+1、IP和端口号
+2、网络通讯协议
+   通讯双方的地址
+
+       IP
+       端口号
+    一定的规则(网络通讯协议)
+       OSI参考模型：模型过于理想化，未能在因特网上进行广泛推广
+       TCP/IP参考模型：事实上的国际标准
+应用层：http ftp teinet dns
+传输层：tcp udp
+网络层：ip icmp arp
+物理+数据链路层： link
+上层和下层是可以传输
+一、IP和端口号
+IP地址：InetAddress
+唯一的标识Internet上的计算机(通讯实体)
+本地回路地址：127.0.0.1   主机名：localhost
+IP地址分类
+方式一：
+IPV4：4个字节点组成，以十进制标识
+IPV6:128位，写成8个无符号整数，每个整数用四个十六进制位表示，数之间用：分开
+方式二：
+公网地址(万维网)
+私网地址(局域网)：192.168.开头专门为组织机构使用
+特点：不容易记
+域名：www.baidu.com
+**************************************************************************************************
+  try {
+            InetAddress a = InetAddress.getByName("www.baidu.com");
+            System.out.println(a);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
+        /*
+        获取本机的IP
+         */
+        InetAddress b = null;
+        try {
+            b = InetAddress.getByName("127.0.0.1");
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        System.out.println(b);
+
+        InetAddress c = null;
+        try {
+            c = InetAddress.getLocalHost();
+            //getHostName()获取域名
+            System.out.println(c.getHostName());
+            //getHostAddress()获取地址
+            System.out.println(c.getHostAddress());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        System.out.println(c);
+**********************************************************************************
+2、端口号
+标识正在计算机上运行的进程(程序)
+不同的进程有不同的端口号
+被规定为一个16位的整数：0~65535
+端口分类：
+  公认端口：0~1023 被预先定义的服务通信占用(http占用端口80，ftp占用端口号21，Telnet占用端口号23)
+   注册端口：1024~49151，分配给用户进程或应用程序
+   动态/私有端口：49152~65535
+端口号与IP地址的组合得出一个网络套接字：Socket 
+二：通讯要素2：
+网络通讯协议：
+  计算机网络实现通讯必须有的一些约定，对速率、传输代码、代码结构、传输控制步骤、出错控制等制定标准
+分层思想：
+  同层可以通讯、上层和下层可以通讯、隔层不可通讯
+传输层：
+  TCP：传输控制协议
+  UDP：用户数据协议
+TCP/IP以其两个主要协议：传输控制协议和网络互联协议，是一组协议，包括多个具有不同功能且互为关联的协议
+TCP/IP协议模型从更实用的角度出发，形成了高效的四层体系结构：物理链路层、IP层、传输层和应用层
+IP协议：是网络层的主要协议，支持网间互联的数据通讯
+TCP/IP协议簇：TCP协议和IP协议
+TCP协议：
+  必须先建立TCP连接，形成传输数据通道
+  采用"三次握手"方式，点对点通信(可靠)
+  TCP协议两个进程：客户端和服务端
+  可大数据量传输
+  传输完毕，需释放已建立的连接(四次挥手)，效率低
+UDP协议：
+  将数据、源、目的封装成数据包，不需要建立连接
+  大小限制64k
+  不需要握手，不可靠
+  可以广播发送
+  发送完毕无需释放资源、开销小、速度快
+(一)TCP
+*************************************************************************************************
+ @Test
+    public void A() {
+        InetAddress inet = null;
+        Socket socket = null;
+        OutputStream os = null;
+        try {
+            //创建Socket对象。指明服务器端的ip和端口号
+            inet = InetAddress.getByName("127.0.0.1");
+            socket = new Socket(inet, 8899);
+            //获取输出流，用于输出数据
+            os = socket.getOutputStream();
+            //写出数据
+            os.write("你好我是你爹".getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            //资源关闭
+            if (os != null) {
+                try {
+                    os.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (socket != null) {
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+
+
+    }
+
+    //服务端
+    @Test
+    public void B() {
+        ServerSocket ss = null;
+        Socket soc = null;
+        InputStream is = null;
+        ByteArrayOutputStream baos = null;
+        try {
+            //创建服务器端的socket，指明自己的端口号
+            ss = new ServerSocket(8899);
+            //调用accept()方法，表示接受来自于客户端的socket
+            soc = ss.accept();
+            //获取输入流
+            is = soc.getInputStream();
+            //读取输入流当中的数据
+            baos = new ByteArrayOutputStream();
+              /*不建议，可能出现乱码
+                   byte []a=new byte[20];
+                   int len;
+                    while ((len=is.read(a))!=-1){
+                     String b = new String(a, 0, len);
+                      System.out.println(b);
+      */
+            byte[] a = new byte[20];
+            int len;
+            while ((len = is.read(a)) != -1) {
+                baos.write(a, 0, len);
+            }
+            System.out.println(baos.toString());
+            System.out.println("收到了来自于："+ss.getInetAddress().getHostAddress()+"的数据");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            //资源关闭
+            if (baos != null) {
+                try {
+                    baos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (soc != null) {
+                try {
+                    soc.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (ss != null) {
+                try {
+                    ss.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+************************************************************************************************************************
