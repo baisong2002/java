@@ -1,3 +1,4 @@
+
 网络编程概述：
   java提供的网络类库，可以实现无痛的网络连接，联网的底层细节被隐藏在java的本机安装系统里，有JVM控制。
   并且java实现了一个跨平台的网络库，程序员面对的是一个统一的网络编程环境
@@ -94,6 +95,12 @@ UDP协议：
   不需要握手，不可靠
   可以广播发送
   发送完毕无需释放资源、开销小、速度快
+客户端
+  自定义
+  浏览器
+服务端
+  自定义
+  Tomcat服务器
 (一)TCP
 *************************************************************************************************
  @Test
@@ -198,3 +205,134 @@ UDP协议：
         }
     }
 ************************************************************************************************************************
+  /*
+    客户端发送文件到服务端，服务端将文件保存本地
+     */
+    @Test
+    public void A() throws IOException {
+        //造socket
+        Socket sock = new Socket(InetAddress.getByName("127.0.0.1"),9090);
+        //造输出流
+        OutputStream os = sock.getOutputStream();
+        //造输入流，获取数据
+        FileInputStream fis = new FileInputStream(new File("hello.txt"));
+        byte[] a = new byte[1024];
+        int len;
+        while ((len=fis.read(a))!=-1){
+            os.write(a,0,len);
+        }
+        fis.close();
+        os.close();
+        sock.close();
+    }
+    @Test
+    public void B() throws IOException {
+        ServerSocket sock = new ServerSocket(9090);
+        Socket ss = sock.accept();
+        InputStream is = ss.getInputStream();
+        FileOutputStream a = new FileOutputStream(new File("hello1.txt"));
+        byte[] b = new byte[1024];
+        int len;
+        while ((len=is.read(b))!=-1){
+            a.write(b,0,len);
+        }
+         a.close();
+        is.close();
+        ss.close();
+        sock.close();
+    }
+**************************************************************************************************************
+  /*
+    从客户端发送文件给客户端，服务端保存到本地，并返回”发送成功“给客户端
+     */
+    @Test
+    public void A() throws IOException {
+        //造socket
+        Socket sock = new Socket(InetAddress.getByName("127.0.0.1"),9091);
+        //造输出流
+        OutputStream os = sock.getOutputStream();
+        //造输入流，获取数据
+        FileInputStream fis = new FileInputStream(new File("hello.txt"));
+        byte[] a = new byte[1024];
+        int len;
+        while ((len=fis.read(a))!=-1){
+            os.write(a,0,len);
+        }
+        //关闭数据传输
+        sock.shutdownOutput();
+        //接受服务端的反馈，并显示到控制台
+        InputStream c = sock.getInputStream();
+        ByteArrayOutputStream d = new ByteArrayOutputStream();
+        byte[] bytes = new byte[20];
+        int len1;
+        while ((len1=c.read(bytes))!=-1){
+            d.write(bytes,0,len1);
+        }
+
+
+        System.out.println(bytes.toString());
+        d.close();
+        c.close();
+
+        fis.close();
+        os.close();
+        sock.close();
+    }
+    @Test
+    public void B() throws IOException {
+        ServerSocket sock = new ServerSocket(9091);
+        Socket ss = sock.accept();
+        InputStream is = ss.getInputStream();
+        FileOutputStream a = new FileOutputStream(new File("hello1.txt"));
+        byte[] b = new byte[1024];
+        int len;
+        while ((len=is.read(b))!=-1){
+            a.write(b,0,len);
+        }
+        System.out.println("图片传输完成");
+        //服务器端给客户端反馈
+        OutputStream c = ss.getOutputStream();
+        c.write("你好！！！".getBytes());
+
+         c.close();
+
+        a.close();
+        is.close();
+        ss.close();
+        sock.close();
+    }
+***************************************************************************************************
+(二)UDP
+********************************************************************************************
+  @Test//发送端
+    public void A() throws IOException {
+        DatagramSocket sock = new DatagramSocket();
+        String a="UDP方式发送的文件";
+        byte[] da = a.getBytes();
+        InetAddress inet = InetAddress.getLocalHost();
+        DatagramPacket packet = new DatagramPacket(da,0,da.length,inet,9090);
+        sock.send(packet);
+        sock.close();
+    }
+    @Test//接受端
+    public void B() throws IOException {
+        DatagramSocket socket = new DatagramSocket(9090);
+        byte[] bytes = new byte[100];
+        DatagramPacket packet = new DatagramPacket(bytes,0,bytes.length);
+        socket.receive(packet);
+        System.out.println(new String(packet.getData(),packet.getLength()));
+        socket.close();
+    }
+***********************************************************************************
+(三)URL：
+统一资源定位符，标识网上某一资源的地址
+基本结构：
+传输协议：//主机名：端口号/文件名#片段名？参数列表
+片段名：即锚点
+参数列表格式：参数名=参数值&参数名
+getprotool()协议名
+getHost()主机名
+getProt()端口号
+getPath()文件路径
+getFile()文件名
+getQuery()查询名
