@@ -15,3 +15,78 @@
  调用任意一个对象的成员变量和方法
  处理注解
  生成生态代理
+关于java.long.Class的理解：
+ 1、类的加载过程：
+     程序经过javac.exe命令以后，会生成一个或多个字节码文件(.class结尾)，接着我们使用java.exe命令对某个字节码文件进行解释运行。相当于将某个字节码文件加载到
+    内存中，此过程就成为类的加载。加载到内存中的类，我们称为运行时类，此运行时类，就作为Class的一个实例。
+ 2、Class的实力就对应一个运行时类。
+       加载到内存中的运行时类，会缓存一定时间。在此时间之内，我们可以通过不同的方式来获取运行时类
+ 3、获取Class类实例：
+        //方式一：调用运行时类的属性
+        Class<Person> class1 = Person.class;
+        System.out.println(class1);
+        //方式二:通过运行时类的对象，调用getClass()
+        Person p1 = new Person();
+        Class class2 = p1.getClass();
+        System.out.println(class2);
+         //方式三:调用Class的静态方法：forName(String classPath) String classPath:类所在的包名
+        Class class3 = Class.forName("Classtest1.Person");
+        System.out.println(class3);
+
+        System.out.println(class1==class2);//true
+        System.out.println(class1==class3);//true
+       //方式四：使用类的加载器：ClassLoader
+        ClassLoader classLoader = Classtest.class.getClassLoader();
+        Class<?> class4 = classLoader.loadClass("Classtest1.Classtest");
+        System.out.println(class4);
+        System.out.println(class1==class4);
+4、Class对应的结构：
+ class:
+   外部类、内部类、成员(成员内部类、静态内部类)、局部内部类、匿名内部类
+ interface:接口
+ []:数组
+   只要数组的元素类型和维度一样，就是同一个Class
+ enum:枚举
+ annotation:注解@interface
+ primitive type:基本数据类型
+ void
+ ***********************************************************************
+    /*
+    Properties:用来读取配置文件
+     */
+    @Test
+    public void A() throws IOException {
+        Properties p = new Properties();
+        //此时的文件默认在当前的module下。
+        //方式一：
+        //    FileInputStream f = new FileInputStream("jdbc.properties");
+        //  p.load(f);
+        //方式二：使用ClassLoader
+        //配置文件默认识别为：当前module的src下
+        ClassLoader classLoader = Classtest2.class.getClassLoader();
+        InputStream is = classLoader.getResourceAsStream("A.properties");
+        p.load(is);
+
+
+        String user = p.getProperty("user");
+        String passwad = p.getProperty("password");
+        System.out.println(user);
+        System.out.println(passwad);
+    }
+}
+*************************************************************************************************************
+一、创建运行时类的对象
+**************************************************************************************************
+ Class class1 = Person.class;
+        /*newInstance():调用此方法创建运行时类的对象。内部调用了运行时的空参构造器
+        要想此方法正常创建运行时类的对象，要求：
+        1、运行时类必须提供空参的构造器
+        2、空参构造器的访问权限得够。通常设置为public
+
+        在javabean中要求提供public的空参构造器。原因：
+        1、便于通过反射，创建运行时类的对象
+        2、便于子类继承此运行时类时，默认调用super()时，保证父类有此构造器
+         */
+        Person o = (Person) class1.newInstance();
+        System.out.println(o);
+**********************************************************************************************************
