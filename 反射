@@ -90,3 +90,210 @@
         Person o = (Person) class1.newInstance();
         System.out.println(o);
 **********************************************************************************************************
+二、获取运行时类的完整结构：
+ /*
+    获取当前运行时类的属性结构
+     */
+    @Test
+    public void A() {
+        Class<Person> class1 = Person.class;
+        //获取属性结构
+        //getFields():获取当前运行时类及其父类所有声明位public的属性
+        Field[] fields = class1.getFields();
+        for (Field field : fields) {
+            System.out.println(field);
+        }
+        //getDeclareFields():获取当前运行时类当中声明的所有属性。（不包含父类中的属性）
+        Field[] declaredFields = class1.getDeclaredFields();
+        for (Field f : declaredFields) {
+            System.out.println(f);
+        }
+    }
+
+    @Test//权限修饰符 数据类型 变量名
+    public void B() {
+        Class<Person> p = Person.class;
+        Field[] f = p.getDeclaredFields();
+        for (Field f1 : f) {
+            //权限修饰符
+            int i = f1.getModifiers();
+            System.out.println(Modifier.toString(i) + "\t");
+            //数据类型
+            Class<?> type = f1.getType();
+            System.out.print(type.getName() + "\t");
+            //变量名
+            String name = f1.getName();
+            System.out.println(name);
+            System.out.println();
+        }
+    }
+
+    /*
+    运行时类的方法结构
+     */
+    @Test
+    public void C() {
+        Class<Person> p = Person.class;
+        //获取所有方法
+        //getMethods():获取当前运行时类及其父类所有声明位public的方法
+        Method[] m = p.getMethods();
+        for (Method a : m) {
+            System.out.println(a);
+        }
+        //getDeclaredMethods():获取当前运行时类中的所有方法。（不包括父类的方法）
+        Method[] d = p.getDeclaredMethods();
+        for (Method m1:d){
+            System.out.println(m1);
+        }
+    }
+********************************************************************************************
+  @Test//权限修饰符 数据类型 变量名
+    public void B() {
+        Class<Person> p = Person.class;
+        Field[] f = p.getDeclaredFields();
+        for (Field f1 : f) {
+            //权限修饰符
+            int i = f1.getModifiers();
+            System.out.println(Modifier.toString(i) + "\t");
+            //数据类型
+            Class<?> type = f1.getType();
+            System.out.print(type.getName() + "\t");
+            //变量名
+            String name = f1.getName();
+            System.out.println(name);
+            System.out.println();
+        }
+    }
+
+    /*
+    运行时类的方法结构
+     */
+    @Test
+    public void C() {
+        Class<Person> p = Person.class;
+        //获取所有方法
+        //getMethods():获取当前运行时类及其父类所有声明位public的方法
+        Method[] m = p.getMethods();
+        for (Method a : m) {
+            System.out.println(a);
+        }
+        //getDeclaredMethods():获取当前运行时类中的所有方法。（不包括父类的方法）
+        Method[] d = p.getDeclaredMethods();
+        for (Method m1:d){
+            System.out.println(m1);
+        }
+    }
+   @Test//@Xxxx 注释
+        // 权限修饰符 返回值类型 方法名(参数类型1 形参1，。。。)throw  XxxException{}
+    public void D(){
+       Class<Person> c = Person.class;
+       Method[] m = c.getMethods();
+       for (Method m1:m) {
+           //注解
+           Annotation[] e = m1.getAnnotations();
+           for (Annotation a:e){
+               System.out.println(a);
+           }
+           //权限修饰符
+           int m2 = m1.getModifiers();
+           System.out.println(Modifier.toString(m2));
+          //返回值类型
+           System.out.print(m1.getReturnType().getName());
+           //方法名
+           System.out.print(m1.getName());
+           System.out.print("(");
+           //形参列表
+           Class<?>[] p1 = m1.getParameterTypes();
+           if (!(p1==null&&p1.length==0)){
+              for (int i=0;i< p1.length;i++){
+                  if (i== p1.length-1) {
+                      System.out.print(p1[i].getName() + "arg" + i);
+                      break;
+                  }
+                  System.out.print(p1[i]+"arg"+i+",");
+              }
+           }
+           System.out.print(")");
+           //异常
+           Class<?>[] n = m1.getExceptionTypes();
+           if (!(n==null&&n.length==0)){
+               System.out.println("throws");
+               for (int i=0;i<n.length;i++){
+                   if (i==n.length-1){
+                       System.out.println(n[i].getName());
+                   }
+                   System.out.println(n[i].getName()+",");
+               }
+           }
+           System.out.println();
+       }
+   }
+******************************************************************************************************
+  Class<Person> p = Person.class;
+        //当前运行时类中public的构造器
+        Constructor<?>[] c = p.getConstructors();
+        for(Constructor i:c){
+            System.out.println(i);
+        }
+        System.out.println();
+        //getDeclaredConstructors():获取当前运行时类中声明名的所有构造器
+        Constructor<?>[] d = p.getDeclaredConstructors();
+        for (Constructor a:d){
+            System.out.println(a);
+        }
+    }
+********************************************************************************************************
+ /*
+    获取构造器结构
+     */
+    @Test
+    public void A() {
+        Class<Person> p = Person.class;
+        //当前运行时类中public的构造器
+        Constructor<?>[] c = p.getConstructors();
+        for (Constructor i : c) {
+            System.out.println(i);
+        }
+        System.out.println();
+        //getDeclaredConstructors():获取当前运行时类中声明名的所有构造器
+        Constructor<?>[] d = p.getDeclaredConstructors();
+        for (Constructor a : d) {
+            System.out.println(a);
+        }
+    }
+    /*
+    运行时类的父类
+     */
+    @Test
+    public void B() {
+        Class<Person> p = Person.class;
+        //getSuperclass():获取运行时类的父类
+        Class<? super Person> s = p.getSuperclass();
+        System.out.println(s);
+    }
+      /*
+       运行时类的带泛型父类
+       */
+    @Test
+    public void C() {
+        Class<Person> p = Person.class;
+        //getSuperclass():获取运行时带泛型类的父类
+        Type g = p.getGenericSuperclass();
+        System.out.println(g);
+    }
+    /*
+    运行时类的带泛型父类的泛型
+    */
+    @Test
+    public void D() {
+        Class<Person> p = Person.class;
+        //getSuperclass():获取运行时带泛型类的父类
+        Type g = p.getGenericSuperclass();
+        ParameterizedType p1= (ParameterizedType) g;
+        //获取泛型类型
+        Type[] a = p1.getActualTypeArguments();
+        for (Type b:a) {
+            System.out.println(((Class) b).getTypeName());
+        }
+    }
+*******************************************************************************************************************
