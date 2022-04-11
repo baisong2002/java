@@ -297,3 +297,44 @@
         }
     }
 *******************************************************************************************************************
+ /*
+    运行时类的接口
+     */
+    @Test
+    public void E() {
+        Class<Person> p = Person.class;
+        //运行时类的接口
+        Class<?>[] i = p.getInterfaces();
+        for (Class c : i) {
+            System.out.println(c);
+        }
+        System.out.println();
+        //运行时类的父类的接口
+        Class<? super Person> s = p.getSuperclass();
+        Class<?>[] a = s.getInterfaces();
+        for (Class c : a) {
+            System.out.println(c);
+        }
+    }
+    /*
+    获取运行时类所在的包
+     */
+    @Test
+    public void N() {
+        Class<Person> p = Person.class;
+        Package a = p.getPackage();
+        System.out.println(a);
+    }
+    /*
+    获取运行时类的注解
+     */
+    @Test
+    public void H() {
+        Class<Person> p = Person.class;
+        Annotation[] a = p.getAnnotations();
+        for (Annotation c : a) {
+            System.out.println(c);
+        }
+    }
+*************************************************************************************************************************
+三、调用运行时类的指定结构
