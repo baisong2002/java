@@ -352,3 +352,183 @@
         Object o = name.get(p1);
         System.out.println(o);
 *********************************************************************************************************
+    /*
+    如何操作运行时类的指定方法
+     */
+    @Test
+    public void C() throws Exception {
+        Class<Person> p = Person.class;
+        Person p1 = p.newInstance();
+        //1、获取指定的某个方法
+        //getDecclaredMethod():参数1：指明获取方法的名称  参数2：指明获取的方法的形参列表
+        Method show = p.getDeclaredMethod("show", String.class);
+        //保证方法可访问
+          show.setAccessible(true);
+        //invock():参数1：方法的调用者  参数2：给方法形参赋值的形参
+        //invock():的返回值即为对应类中调用方法的返回值
+        Object return1 = show.invoke(p1, "CHN");
+        System.out.println(return1);
+        System.out.println("*********如何调用静态方法*************");
+
+        Method showDesc = p.getDeclaredMethod("showDesc");
+        showDesc.setAccessible(true);
+        //如果调用的运行时类没有返回值，则该invoke()返回null
+        Object o = showDesc.invoke(Person.class);
+        System.out.println(o);//null
+    }
+***********************************************************************************************************************************************
+  /*
+    如何调用运行时类中的构造器
+     */
+    @Test
+    public void D() throws Exception {
+        Class<Person> p = Person.class;
+        //1、获取指定构造器
+        //getDeclardConstructor():参数：指明构造器的参数列表
+        Constructor<Person> d = p.getDeclaredConstructor(String.class);
+       //2、保证构造器可访问
+        d.setAccessible(true);
+        //3、创建运行时类的对象
+        Person per =(Person) d.newInstance("Tom");
+        System.out.println(per);
+    }
+**********************************************************************************************************
+四、动态代理：
+ 静态代理：代理类和目标对象在编译期定下来，每个代理类只能为一个接口服务
+ 动态代理：通过代理类来调用其他对象的方法，程序运行时根据需要动态创建目标
+      使用场合：
+          调试
+          远程方法调用
+   优点：更加灵活和统一的处理众多方法
+1、代理模式和动态代理：
+    /*
+动态代理
+ */
+interface Human {
+    String getBelief();
+
+    void eat(String food);
+}
+
+//被代理类
+class SuperMan implements Human {
+
+    @Override
+    public String getBelief() {
+        return "I believe I can fiy!";
+    }
+
+    @Override
+    public void eat(String food) {
+        System.out.println("我喜欢吃" + food);
+    }
+}
+
+/*动态代理类
+     1、如何根据加载到内存中的被代理类，动态的创建一个代理类和对象
+
+ */
+class Pro {
+    //调用此方法返回一个代理类对象
+    public static Object getPro(Object obj) {//obj:被代理类的对象
+        My my = new My();
+        my.bind(obj);
+        return Proxy.newProxyInstance(obj.getClass().getClassLoader(), obj.getClass().getInterfaces(), my);
+    }
+}
+
+class My implements InvocationHandler {
+    private Object obj;//赋值时需要使用被代理类的对象进行赋值
+
+    public void bind(Object obj) {
+        this.obj = obj;
+    }
+
+    //当我们通过代理类的对象，调用方法a时，就会自动调用如下的方法:invoke()
+    //将被代理类要执行的方法a的功能生命在invoke()中
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        //method:即为代理类对象调用方法，此方法也就作为了被代理类对象要调用的方法
+        //obj:被代理类的对象
+        Object invoke = method.invoke(obj, args);
+        //上述方法的返回值就当作当前类中的invoke()返回值
+        return invoke;
+    }
+}
+
+public class test2 {
+    public static void main(String[] args) {
+        SuperMan superMan = new SuperMan();
+        //o：就是代理类的对象
+        Human o = (Human) Pro.getPro(superMan);
+        String belief = o.getBelief();
+        System.out.println(belief);
+        o.eat("四川麻辣汤");
+    }
+***************************************************************************************************
+
+/*
+动态代理
+ */
+interface Human {
+    String getBelief();
+
+    void eat(String food);
+}
+
+//被代理类
+class SuperMan implements Human {
+
+    @Override
+    public String getBelief() {
+        return "I believe I can fiy!";
+    }
+
+    @Override
+    public void eat(String food) {
+        System.out.println("我喜欢吃" + food);
+    }
+}
+
+/*动态代理类
+     1、如何根据加载到内存中的被代理类，动态的创建一个代理类和对象
+
+ */
+class Pro {
+    //调用此方法返回一个代理类对象
+    public static Object getPro(Object obj) {//obj:被代理类的对象
+        My my = new My();
+        my.bind(obj);
+        return Proxy.newProxyInstance(obj.getClass().getClassLoader(), obj.getClass().getInterfaces(), my);
+    }
+}
+
+class My implements InvocationHandler {
+    private Object obj;//赋值时需要使用被代理类的对象进行赋值
+
+    public void bind(Object obj) {
+        this.obj = obj;
+    }
+
+    //当我们通过代理类的对象，调用方法a时，就会自动调用如下的方法:invoke()
+    //将被代理类要执行的方法a的功能生命在invoke()中
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        //method:即为代理类对象调用方法，此方法也就作为了被代理类对象要调用的方法
+        //obj:被代理类的对象
+        Object invoke = method.invoke(obj, args);
+        //上述方法的返回值就当作当前类中的invoke()返回值
+        return invoke;
+    }
+}
+
+public class test2 {
+    public static void main(String[] args) {
+        SuperMan superMan = new SuperMan();
+        //o：就是代理类的对象
+        Human o = (Human) Pro.getPro(superMan);
+        String belief = o.getBelief();
+        System.out.println(belief);
+        o.eat("四川麻辣汤");
+    }
+********************************************************************************************************************
