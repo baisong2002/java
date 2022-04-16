@@ -1,0 +1,85 @@
+是一个独立于特定数据库管理系统，通用的SQL数据库存取和操作的公共接口
+一、获取数据库连接
+ 1、Driver接口：
+    url:jdbc
+*****************************************************************************************
+Driver d=new com.mysql.cj.jdbc.Driver();
+        /*
+        url:http://localhost:8080/gmall/keyboard.jpg
+        jdbc:mysql协议
+        localhost:ip地址
+        3306:端口号
+        test:test数据库
+         */
+        String url="jdbc:mysql://localhost:3306/";
+        //将用户名和密码封装在Properties中
+        Properties info=new Properties();
+       info.setProperty("user","root");
+       info.setProperty("password","root");
+        Connection conn = d.connect(url, info);
+
+        System.out.println(conn);
+***********************************************************************************
+2、对方式一的迭代，在如下程序中不出现第三方的API，是的程序有很好的移植性
+//获取Driver实现类对象，使用反射
+        Class<?> c = Class.forName("com.mysql.cj.jdbc.Driver");
+        Driver d =(Driver) c.newInstance();
+        //2、提供要连接的数据库
+        String url="jdbc:mysql://localhost:3306/sys";
+        //3、提供用户名和密码
+        Properties p = new Properties();
+        p.setProperty("user","root");
+        p.setProperty("password","root");
+        //4、获取连接
+        Connection a = d.connect(url, p);
+        System.out.println(a);
+****************************************************************************************、
+3、 DriverManager替换Driver
+  //1、获取Driver实现类对象
+        Class<?> c = Class.forName("com.mysql.cj.jdbc.Driver");
+        Driver o =(Driver) c.newInstance();
+        //2、提供另外三个连接的基本信息
+        String url="jdbc:mysql://localhost:3306/sys";
+        String user="root";
+        String password="root";
+        //注册驱动
+        DriverManager.registerDriver(o);
+        //获取链接
+        Connection a = DriverManager.getConnection(url, user, password);
+        System.out.println(a);
+*****************************************************************************************************
+4、优化
+ //1、提供三个连接的基本信息
+    String url="jdbc:mysql://localhost:3306/sys";
+    String user="root";
+    String password="root";
+    //2、获取Driver实现类对象
+    Class.forName("com.mysql.cj.jdbc.Driver");
+    //3、获取连接
+    Connection a = DriverManager.getConnection(url, user, password);
+    System.out.println(a);
+***********************************************************************************************
+相较于方式三可以省略注册驱动
+    原因：在mysql的Driver实现类中，声明了静态方法，而静态方法随着类的加载而加载
+第二步可以省略，连接MySQL数据库可以省略，其他数据库则不行
+5、
+  @Test//(final)将数据库连接需要的4个基本信息声明在配置文件中，通过读取配置文件的方式获取连接
+    public void A() throws Exception {
+        //读取配置文件的基本信息
+        InputStream i = test5.class.getClassLoader().getResourceAsStream("jdbc.properties");
+        Properties p = new Properties();
+        p.load(i);
+        String user = p.getProperty("user");
+        String password = p.getProperty("password");
+        String url= p.getProperty("url");
+        String driverClass = p.getProperty("driverClass");
+        //2、加载驱动
+        Class.forName(driverClass);
+        //3、获取连接
+        Connection c = DriverManager.getConnection(url, user, password);
+        System.out.println(c);
+    }
+********************************************************************************************************
+好处：实现了数据和代码的分离。实现了解耦
+     如果需要修改配置文件信息，可以避免程序重新打包
+二、使用PreparedStatement实现增删改查(CRUD)
