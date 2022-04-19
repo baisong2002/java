@@ -83,3 +83,118 @@ Driver d=new com.mysql.cj.jdbc.Driver();
 好处：实现了数据和代码的分离。实现了解耦
      如果需要修改配置文件信息，可以避免程序重新打包
 二、使用PreparedStatement实现增删改查(CRUD)
+     PreparedStatement p1 = null;
+        Connection c = null;
+        try {
+            //读取配置文件
+            InputStream i = ClassLoader.getSystemClassLoader().getResourceAsStream("jdbc.properties");
+            Properties p = new Properties();
+            p.load(i);
+            String user = p.getProperty("user");
+            String password = p.getProperty("password");
+            String url = p.getProperty("url");
+            String driverClass = p.getProperty("driverClass");
+            //2、加载驱动
+            Class.forName(driverClass);
+            //3、获取连接
+            c = DriverManager.getConnection(url, user, password);
+            //System.out.println(c);
+            //向表bai1添加一条记录
+            //编译sql语句，返回PreparedStatement的实例
+            String sql = "insert into bai1(id,name)values(?,?)";//?:占位符
+            p1 = c.prepareStatement(sql);
+            //填充占位符
+            p1.setInt(1, 01);
+            p1.setString(2,"邓浩");
+            //执行SQL操作
+            p1.execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            //资源关闭
+            try {
+                if (p1 != null) {
+                    p1.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (c != null) {
+                    c.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+********************************************************************************************
+ /*
+    通用的增删改操作
+     */
+    public void update(String sql,Object  ...arg){//sql当中占位符的个数应该与可变形参的长度相同
+        Connection c = null;
+        PreparedStatement p =null;
+        try {
+            //1、获取连接
+            c = JDBCutils.getConnection1();
+            //2、预编译sql语句，返回prepareStatement的实例
+            p = c.prepareStatement(sql);
+            //3、填充占位符
+            for (int i=0;i<arg.length;i++){
+                p.setObject(i+1,arg[i]);//小心参数声明错误
+            }
+            //执行
+            p.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+
+            //关闭资源
+            JDBCutils.close(c,p);
+        }
+    }
+    @Test
+    public void testA(){
+        String sql="delete from bai1 where id=?";
+        update(sql,1);
+    }
+*******************************************************************************************************
+  @Test
+    public void A() {
+        Connection c = null;
+        PreparedStatement p =null;
+        ResultSet r =null;
+        try {
+            c = JDBCutils.getConnection1();
+            String sql="select id,name from bai1 where id=?";
+            p = c.prepareStatement(sql);
+            p.setObject(1,1);
+            //执行，并返回结果集
+            r = p.executeQuery();
+            //处理结果集
+            //next():（1）如果有数据返回ture指针下移（2）判断下个位置是否有元素
+            if (r.next()){
+                //获取当前这条数据的各个字段值
+                int a = r.getInt(1);
+                String s = r.getString(2);
+                /*
+                //方式一：直接输出
+                System.out.println("id:"+a+"name:"+s);
+                //方式二：封装在数组中
+                Object[]b=new Object[]{a,s};
+                */
+                //方式三：封装在一个类的对象中
+                bean bean = new bean(a,s);
+                System.out.println(bean);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            //关闭资源
+            JDBCutils.close1(c,p,r);
+
+        }
