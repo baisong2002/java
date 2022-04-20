@@ -196,5 +196,4 @@ Driver d=new com.mysql.cj.jdbc.Driver();
         }finally {
             //关闭资源
             JDBCutils.close1(c,p,r);
-
         }
