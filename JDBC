@@ -197,3 +197,8 @@ Driver d=new com.mysql.cj.jdbc.Driver();
             //关闭资源
             JDBCutils.close1(c,p,r);
         }
+ORM编程思想：
+   一个数据表对应一个java类
+  表中的一条记录对应java类的一个对象
+  表中的一个字段对应java类中的一个属性
+  
