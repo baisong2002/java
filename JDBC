@@ -1,54 +1,11 @@
 是一个独立于特定数据库管理系统，通用的SQL数据库存取和操作的公共接口
 一、获取数据库连接
  1、Driver接口：
-    url:jdbc
-*****************************************************************************************
-Driver d=new com.mysql.cj.jdbc.Driver();
-        /*
         url:http://localhost:8080/gmall/keyboard.jpg
         jdbc:mysql协议
         localhost:ip地址
         3306:端口号
         test:test数据库
-         */
-        String url="jdbc:mysql://localhost:3306/";
-        //将用户名和密码封装在Properties中
-        Properties info=new Properties();
-       info.setProperty("user","root");
-       info.setProperty("password","root");
-        Connection conn = d.connect(url, info);
-
-        System.out.println(conn);
-***********************************************************************************
-2、对方式一的迭代，在如下程序中不出现第三方的API，是的程序有很好的移植性
-//获取Driver实现类对象，使用反射
-        Class<?> c = Class.forName("com.mysql.cj.jdbc.Driver");
-        Driver d =(Driver) c.newInstance();
-        //2、提供要连接的数据库
-        String url="jdbc:mysql://localhost:3306/sys";
-        //3、提供用户名和密码
-        Properties p = new Properties();
-        p.setProperty("user","root");
-        p.setProperty("password","root");
-        //4、获取连接
-        Connection a = d.connect(url, p);
-        System.out.println(a);
-****************************************************************************************、
-3、 DriverManager替换Driver
-  //1、获取Driver实现类对象
-        Class<?> c = Class.forName("com.mysql.cj.jdbc.Driver");
-        Driver o =(Driver) c.newInstance();
-        //2、提供另外三个连接的基本信息
-        String url="jdbc:mysql://localhost:3306/sys";
-        String user="root";
-        String password="root";
-        //注册驱动
-        DriverManager.registerDriver(o);
-        //获取链接
-        Connection a = DriverManager.getConnection(url, user, password);
-        System.out.println(a);
-*****************************************************************************************************
-4、优化
  //1、提供三个连接的基本信息
     String url="jdbc:mysql://localhost:3306/sys";
     String user="root";
@@ -57,7 +14,6 @@ Driver d=new com.mysql.cj.jdbc.Driver();
     Class.forName("com.mysql.cj.jdbc.Driver");
     //3、获取连接
     Connection a = DriverManager.getConnection(url, user, password);
-    System.out.println(a);
 ***********************************************************************************************
 相较于方式三可以省略注册驱动
     原因：在mysql的Driver实现类中，声明了静态方法，而静态方法随着类的加载而加载
@@ -82,123 +38,21 @@ Driver d=new com.mysql.cj.jdbc.Driver();
 ********************************************************************************************************
 好处：实现了数据和代码的分离。实现了解耦
      如果需要修改配置文件信息，可以避免程序重新打包
-二、使用PreparedStatement实现增删改查(CRUD)
-     PreparedStatement p1 = null;
-        Connection c = null;
-        try {
-            //读取配置文件
-            InputStream i = ClassLoader.getSystemClassLoader().getResourceAsStream("jdbc.properties");
-            Properties p = new Properties();
-            p.load(i);
-            String user = p.getProperty("user");
-            String password = p.getProperty("password");
-            String url = p.getProperty("url");
-            String driverClass = p.getProperty("driverClass");
-            //2、加载驱动
-            Class.forName(driverClass);
-            //3、获取连接
-            c = DriverManager.getConnection(url, user, password);
-            //System.out.println(c);
-            //向表bai1添加一条记录
-            //编译sql语句，返回PreparedStatement的实例
-            String sql = "insert into bai1(id,name)values(?,?)";//?:占位符
-            p1 = c.prepareStatement(sql);
-            //填充占位符
-            p1.setInt(1, 01);
-            p1.setString(2,"邓浩");
-            //执行SQL操作
-            p1.execute();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } finally {
-            //资源关闭
-            try {
-                if (p1 != null) {
-                    p1.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            try {
-                if (c != null) {
-                    c.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-********************************************************************************************
- /*
-    通用的增删改操作
-     */
-    public void update(String sql,Object  ...arg){//sql当中占位符的个数应该与可变形参的长度相同
-        Connection c = null;
-        PreparedStatement p =null;
-        try {
-            //1、获取连接
-            c = JDBCutils.getConnection1();
-            //2、预编译sql语句，返回prepareStatement的实例
-            p = c.prepareStatement(sql);
-            //3、填充占位符
-            for (int i=0;i<arg.length;i++){
-                p.setObject(i+1,arg[i]);//小心参数声明错误
-            }
-            //执行
-            p.execute();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }finally {
-
-            //关闭资源
-            JDBCutils.close(c,p);
-        }
-    }
-    @Test
-    public void testA(){
-        String sql="delete from bai1 where id=?";
-        update(sql,1);
-    }
-*******************************************************************************************************
-  @Test
-    public void A() {
-        Connection c = null;
-        PreparedStatement p =null;
-        ResultSet r =null;
-        try {
-            c = JDBCutils.getConnection1();
-            String sql="select id,name from bai1 where id=?";
-            p = c.prepareStatement(sql);
-            p.setObject(1,1);
-            //执行，并返回结果集
-            r = p.executeQuery();
-            //处理结果集
-            //next():（1）如果有数据返回ture指针下移（2）判断下个位置是否有元素
-            if (r.next()){
-                //获取当前这条数据的各个字段值
-                int a = r.getInt(1);
-                String s = r.getString(2);
-                /*
-                //方式一：直接输出
-                System.out.println("id:"+a+"name:"+s);
-                //方式二：封装在数组中
-                Object[]b=new Object[]{a,s};
-                */
-                //方式三：封装在一个类的对象中
-                bean bean = new bean(a,s);
-                System.out.println(bean);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }finally {
-            //关闭资源
-            JDBCutils.close1(c,p,r);
-        }
 ORM编程思想：
    一个数据表对应一个java类
   表中的一条记录对应java类的一个对象
   表中的一个字段对应java类中的一个属性
-  
+数据库事务：
+   事务：一组逻辑操作单元(一行或多行DML操作(一个或多个数据库操作语句))，使数据从一种状态换到另一种状态(数据的变换)
+   事务处理(事务操作)的原则：
+        保证事务都要作为一个工作单元来执行，即使出现了故障，都不改变这种执行方式。当在一个事务中执行多个操作时，要么所有事务都被提交，要么这些
+     修改就永久的保存下来，要么数据库管理系统将放弃所作的所有修改，整个事务回滚
+        为确保数据库的一致性，数据的操作应当时离散的成组的逻辑单元：当它全部完成时，数据的一致性可以保持，而当这个单元中的一部分操作失败，整个事
+     务应全部视为错误，所有从起始点以后的操作全部退回到开始状态
+   数据一旦提交不可回滚
+      那些操作会导致数据的自动提交？
+       >DDL操作一旦执行，都会自动提交
+            >set autocommot=false对DDL失效
+       >DML默认情况下一旦执行，都会自动提交
+            >可以通过set autocommot=false的方式取消DML操作的自动提交
+       >默认关闭连接时，会将尚未提交的操作自动提交
