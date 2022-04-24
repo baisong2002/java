@@ -42,3 +42,4 @@ mvn -v 命令和构建无关，而构建的相关命令要在pom.xml所在目录
   mvn package
  安装:
   mvn install
+
