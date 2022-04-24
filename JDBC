@@ -88,3 +88,5 @@ ORM编程思想：
        set transaction isolation level read committed;
      设置数据库的全局隔离级别
        set global transaction isolation level read committed;
+ 
+ 
