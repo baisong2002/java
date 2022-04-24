@@ -2,9 +2,15 @@ xml:是可扩展的标记性语言
    作用:1、保存数据，并且这些数据具有描述性
         2、作为项目或模块的配置文件
         3、作为网络传输数据的格式(JSON为主)
-
-
-
+javaweb:
+    是所有通过java语言编写可以通过浏览器访问的程序总成
+    是基于请求和响应来开发的
+        请求:是客户端给服务器发送数据，叫请求(Request)
+        响应:是服务器给客户端回传数据，叫响应(Response)
+    请求和响应成对出现且一一对应
+web分类:
+ 静态资源:html、css、js、txt、...等不变的
+ 动态资源:jsp页面、Servlet程序
 1、BS和CS的异同
 CS：客户端服务器架构模式(软件)
    优点：充分利用客户端资源，减轻服务器的负荷
@@ -17,10 +23,33 @@ BS：浏览器服务器端架构模式(网页软件)
   客户端:Client
   服务器端：Server
   部署：deploy
+目录：bin:专门用来存放tomcat服务器的可执行程序
+     conf:专门用来存放tomcat配置文件
+     lib:专门用来存放tomcat的JAR包
+     logs:专门用来存放tomcat运行时输出的日记信息
+     temp:专门用来存放tomcat运行时产生的临时数据
+     webapps:专门用来存放web工程(一个目录一个工程)
+     work:是tomcat工作时的目录，可以用来存放tomcat运行时jsp翻译为Servlet的源码，和Session钝化目录
+启动：startup.bat双击   catalina run
+停止: tomcat窗口关闭按钮    tomcat窗口置为当前窗口，然后ctrl+c     shutdown.bat  
 访问本机Tomcat: http://localhost:8080/
+修改端口号:
+   tomcat默认端口号:8080
+   找到tomcat下的conf,找server.xml,找到Connector标签，修改prot属性为需要的端口号值(1-65535)。修改完端口号,必须重启tomcat服务器
+ http协议端口号为：80  (自动抹去) 看不见的端口号就是80
  1、新建web项目，并在Tomcat中
-      
+      (1)把web工程目录，拷贝到tomcat目录下的webapps目录下即可
+      (2)tomcat下conf目录下的localhost里，创建配置文件:xxx.xml   
+             配置文件：<Context path="/web03" docBase="E:\IdeaProjects\JavaWeb\out\artifacts\web03_war_exploded"/>
+                      Context:表示工程上下文     path:表示工程的访问路径   docBase:表示工程目录在哪里
+  手托html文件到浏览器，使用file协议，直接访问file协议后的路径，步骤网络
+  tomcat打开，使用http协议，由http:协议，localhost：ip地址  8080端口号  nihao:工程路径  hello.html:那个文件  走网络
+ROOT工程:
+    格式：   http://ip:port/  ----> 即没有工程名的就是root工程
+     http://ip:port/工程名/   ---->没有资源名，默认访问index,html页面   
 3、Servlet
+ 2.5及以前使用xml
+ 2.5以后使用注解
   功能：1、获取用户(客户端)发给我的数据
         2、调用DAO中的方法完成添加功能
         3、在控制台打印添加成功
