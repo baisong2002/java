@@ -48,9 +48,28 @@ ROOT工程:
     格式：   http://ip:port/  ----> 即没有工程名的就是root工程
      http://ip:port/工程名/   ---->没有资源名，默认访问index,html页面   
 3、Servlet
+    Servelt:javaEE规范之一。(规范接口)
+            时javaweb三大组件之一。(三大组件:Servlt程序、Filter程序、Listener监听器)
+            是运行在服务器上的一个java小程序，可以接受客户端发送过来的请求，并响应数据给客户端
+Servlet程序：
+  1、编写一个类去实现Servlet接口
+  2、实现Servlet方法，处理请求，并响应数据
+  3、到web.xml中配置Servlet程序访问地址
  2.5及以前使用xml
  2.5以后使用注解
   功能：1、获取用户(客户端)发给我的数据
         2、调用DAO中的方法完成添加功能
         3、在控制台打印添加成功
-    
+Servelet生命周期:
+  1、执行Servlet构造方法
+  2、执行init方法
+  3、执行Servelet方法
+  4、执行destroy方法
+1、2是在第一次访问的时候创建servlet程序
+3每次访问都会调用
+4web工程在停止时调用
+ web请求分为get、post请求，两个请求执行内容不一样
+ 一般情况概况下都是使用集成HttpServelet类的方式去实现Servlet程序
+  1、编写一个类去集成HttpServelet类
+  2、根据业务需要重写doGet和doPost方式
+  3、到web.xml中配置Servlet
