@@ -58,6 +58,10 @@ js严格区分大小写
   var a=function(1,2,return 1+2);
 调用函数：
    要使用圆括号，括号内加入函数的参数
+高阶函数:
+   map():定义在Array中，传入参数为函数对象本身
+       作用：把运算规则抽象化; 转换数据类型
+reduce:
 五、对象
 生成方法:
  var 对象名={
@@ -84,3 +88,24 @@ js严格区分大小写
      语句;
  }
 如果with区块有变量复制操作，则该变量必须是当前对象已经存在的属性，否则会创建一个全局变量
+六、浏览器模型对象
+Window对象是任何对象的父对象
+   有：innerHight和innerWrith两个属性,可以设置浏览器窗口的内部宽度和高度(除去菜单栏、工具栏等占位元素后，用于显示网页的净宽高 )
+       outerHeight和outerWrith用于获取整个浏览器的高
+ 
+    window.moveBy(dx,dy) 相对移动
+    window.moverTo(w,h)  绝对移动
+    widow.open([url],[target],[options])窗口的导航和打开
+    url：新窗口的地址
+    target:新窗口的定位目标
+navigator对象用于获取浏览器信息
+   navigator.appName：浏览器名称；
+   navigator.appVersion：浏览器版本；
+   navigator.language：浏览器设置的语言；
+   navigator.platform：操作系统类型；
+   navigator.userAgent：浏览器设定的User-Agent字符串。 
+ navigator可以被用户更改
+七、DOM
+   DOM 是 JavaScript 操作网页的接口，全称为“文档对象模型”
+   作用:将网页转为一个 JavaScript 对象，从而可以用脚本进行各种操作
+节点:只是一个接口规范
