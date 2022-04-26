@@ -73,3 +73,22 @@ Servelet生命周期:
   1、编写一个类去集成HttpServelet类
   2、根据业务需要重写doGet和doPost方式
   3、到web.xml中配置Servlet
+ServletConfig类
+   Servlet类程序的配置信息
+   Servlet程序和ServletConfig对象都是由Tomcat负责创建，我们负责使用
+   Servlet程序默认是第一次访问时创建，servletConfig是每个Servlet程序创建时，就创建一个对应的servletconfig对象
+ 作用:
+  获取Servlet程序的别名servlet-name的值
+  获取初始化参数init-name 
+  获取ServletContext对象
+ServletContext对象:
+   1、是一个接口，表示Servlet上下文对象
+   2、一个web工程只有一个servletcontext对象实例
+   3、Servlet是一个域对象
+       域对象，是可以想map一样存储数据
+         这里的域是指存储对象的操作范围
+    作用:
+     1、获取web,xml配置的上下文参数
+     2、获取当前的工程路径  格式:/工程路径
+     3、获取工程部署后再服务器磁盘上的绝对路径
+     4、向map一样存储数据
