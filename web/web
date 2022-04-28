@@ -177,7 +177,16 @@ ROOT工程:
          session.getMaxinactiveInterval() ->session的非激活间隔时间，半个小时
          session.setMaxinactiveInterval()   ->设置非激活间隔时间
          session.invalidate()               ->然会话立即失效
-    ServletConfig类
+  session保存作用域:
+    session保存作用域适合某个具体的sesson对应的
+      session.setAttribute("user","ni");     向当前session保存作用域添加一个值"ni",对应的value为"user"
+      session.getAttribute("user");          在session保存作用域中获取取"user"的值
+    viod removeAttribute("user");             删除"user"对应的值
+
+四、服务器内部转发及客户端重定向
+     服务器内部转发   request.getRequestDispatcher(".....").from(request,response)
+    客户端重定向      response.sendRedirect("...");
+   ServletConfig类
       Servlet类程序的配置信息
       Servlet程序和ServletConfig对象都是由Tomcat负责创建，我们负责使用
       Servlet程序默认是第一次访问时创建，servletConfig是每个Servlet程序创建时，就创建一个对应的servletconfig对象
