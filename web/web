@@ -185,7 +185,15 @@ ROOT工程:
 
 四、服务器内部转发及客户端重定向
      服务器内部转发   request.getRequestDispatcher(".....").from(request,response)
-    客户端重定向      response.sendRedirect("...");
+             一次请求响应的过程对于客户端而言。服务器端内部经过了几次转发，客户端是不知道的
+             地址栏没有变化
+     客户端重定向     response.sendRedirect("...");
+            两次请求响应的过程，客户端知道请求的url已经发生变化
+            地址栏有变化
+五、Thymeleaf - 视图模板技术
+      
+     
+
    ServletConfig类
       Servlet类程序的配置信息
       Servlet程序和ServletConfig对象都是由Tomcat负责创建，我们负责使用
