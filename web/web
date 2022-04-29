@@ -67,35 +67,6 @@ ROOT工程:
       1、编写一个类去集成HttpServelet类
       2、根据业务需要重写doGet和doPost方式
        3、到web.xml中配置Servlet
-   ServletConfig类
-      Servlet类程序的配置信息
-      Servlet程序和ServletConfig对象都是由Tomcat负责创建，我们负责使用
-      Servlet程序默认是第一次访问时创建，servletConfig是每个Servlet程序创建时，就创建一个对应的servletconfig对象
-    作用:
-       获取Servlet程序的别名servlet-name的值
-       获取初始化参数init-name 
-        获取ServletContext对象
-  ServletContext对象:
-      1、是一个接口，表示Servlet上下文对象
-      2、一个web工程只有一个servletcontext对象实例
-      3、Servlet是一个域对象
-       域对象，是可以想map一样存储数据
-         这里的域是指存储对象的操作范围
-    作用:
-     1、获取web,xml配置的上下文参数
-     2、获取当前的工程路径  格式:/工程路径
-     3、获取工程部署后再服务器磁盘上的绝对路径
-     4、向map一样存储数据
- 问题:
-     404：在部署时，修改application Context(应用程序上下文)。然后再回到server选择卡，检查url的值
- url的值指的是tomcat启动完成后自动打开你指定的浏览器，然后默认访问的网址，启动后报404以为找不到资源
-      405:当前请求的方法不支持
-     空指针或NumberFormatException:以为有两个值，若其中一个获取不到，结果你想对mull进行Integer.parsetIn()就会报错。原因大部分是name="price"写错
- 结果还在request.getParameter("price") 去获取
- 请求中中文乱码问题：
-   tomcat8开始，设置编码，只需针对post即可
-      reques.setCharacterEncoding("UTF-8");
-   注意:设置编码一定要在所有程序之前
   Servlet集成关系:
      Servlet接口 
         GenericServlet抽象类
@@ -127,14 +98,15 @@ ROOT工程:
         启发:尽量不要在servlet中定义成员变量，如果非要定义，那么不要：(1)修改成员变量的值（2）不要进行逻辑判断
 二、HTTP协议
    HTTP:超文本传输协议
+  HTTP协议:客户端和服务器之间通讯时，发送的数据，需要遵循的规则
    HTTP是无状态的
    作用:就是确定了请求和响应数据的格式  浏览器发送get服务器的数据:请求报文；服务器返还给浏览器的数据:响应报文
+   报文：http中的数据
    请求:
        请求行：
          作用:展示当前请求的最基本的信息   
-         包含三个部分:请求方式、访问地址、HTTP协议版本(1.0  1.1)
-           
-       请求消息头：
+         包含三个部分:请求方式、访问地址、HTTP协议版本(1.0  1.1)           
+       请求消息头： key:value 
           作用:通过具体的参数对本次请求进行详细说明
           格式:键值对，键值和值之间用冒号隔开
         HOST:服务器的主机地址
@@ -190,11 +162,7 @@ ROOT工程:
      客户端重定向     response.sendRedirect("...");
             两次请求响应的过程，客户端知道请求的url已经发生变化
             地址栏有变化
-五、Thymeleaf - 视图模板技术
-      
-     
-
-   ServletConfig类
+五、ServletConfig类
       Servlet类程序的配置信息
       Servlet程序和ServletConfig对象都是由Tomcat负责创建，我们负责使用
       Servlet程序默认是第一次访问时创建，servletConfig是每个Servlet程序创建时，就创建一个对应的servletconfig对象
@@ -207,12 +175,17 @@ ROOT工程:
       2、一个web工程只有一个servletcontext对象实例
       3、Servlet是一个域对象
        域对象，是可以想map一样存储数据
-         这里的域是指存储对象的操作范围
+         这里的域是指存储对象的操作范围，整个项目工程
+      4、ServietContext实在web工程启动的时候创建。在web工程停止时销毁
     作用:
      1、获取web,xml配置的上下文参数
      2、获取当前的工程路径  格式:/工程路径
      3、获取工程部署后再服务器磁盘上的绝对路径
-     4、向map一样存储数据
+     4、像map一样存储数据
+6、HttpServletRequest
+  作用:每次只要有请求今日tomcat服务器，tomcat服务器就会把请求过来的Http协议信息解析好封装到Request对象中
+ 然后传递到servlet方法(doGet和doPost)中给我们使用。我们可以通过HttpServletRequest对象，获取所有请求的信息
+
 问题:
     1、404：在部署时，修改application Context(应用程序上下文)。然后再回到server选择卡，检查url的值
  url的值指的是tomcat启动完成后自动打开你指定的浏览器，然后默认访问的网址，启动后报404以为找不到资源
@@ -224,4 +197,6 @@ ROOT工程:
            reques.setCharacterEncoding("UTF-8");
        注意:设置编码一定要在所有程序之前
     5、500:服务器内部错误
-     
+    6、200:请求成功
+    7、302请求重定向
+    8、
