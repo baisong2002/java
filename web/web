@@ -182,9 +182,15 @@ ROOT工程:
      2、获取当前的工程路径  格式:/工程路径
      3、获取工程部署后再服务器磁盘上的绝对路径
      4、像map一样存储数据
-6、HttpServletRequest
+六、HttpServletRequest
   作用:每次只要有请求今日tomcat服务器，tomcat服务器就会把请求过来的Http协议信息解析好封装到Request对象中
  然后传递到servlet方法(doGet和doPost)中给我们使用。我们可以通过HttpServletRequest对象，获取所有请求的信息
+getRequestURI()  获取请求的资源路径
+getRequestURL()   获取请求的统一资源定位符(绝对路径)
+getRemoteHost()  获取客户端的ip地址
+getHeader()      获取请求头
+getMethod()      获取请求的方式GET或POST
+七、Thymeleaf   视图模板技术
 
 问题:
     1、404：在部署时，修改application Context(应用程序上下文)。然后再回到server选择卡，检查url的值
