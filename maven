@@ -26,6 +26,8 @@ maven的作用：
 maven命令：
            mvn是主命令(其他的是子命令)   archetype (插件): generate(目标)
    生成maven工程: mvn archetype:generate   
+项目和工程区别:
+   项目包含很多工程
 2、POM
     含义：项目对象模型
 mvn -v 命令和构建无关，而构建的相关命令要在pom.xml所在目录运行----操作那个工程就进入这个工程的pom.xml目录
