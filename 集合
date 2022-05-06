@@ -222,3 +222,5 @@ HashSet:主要实现类：线程不安全；可以存储null值
   LinkedHashSet:HashSet的子类；遍历其每部数据时，可以按照添加的顺序遍历
 TreeSet:可以按照添加的对象的指定属性，进行排序
 set没有额外定义新的方法，都是使用Collection中声明过的方法
+五、Map类
+  Map是一种 键值(value-->key)类型的容器
