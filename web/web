@@ -67,7 +67,7 @@ ROOT工程:
       1、编写一个类去集成HttpServelet类
       2、根据业务需要重写doGet和doPost方式
        3、到web.xml中配置Servlet
-  Servlet集成关系:
+  Servlet继承关系:
      Servlet接口 
         GenericServlet抽象类
                 HttpServlet实现类
@@ -191,9 +191,111 @@ getRemoteHost()  获取客户端的ip地址
 getHeader()      获取请求头
 getMethod()      获取请求的方式GET或POST
 七、JSP
-  java的服务器页面
+1、JSP脚本声明
 本质上是Servlet程序
-   
+     格式： <%!    %>   
+（1）表达式脚本(常用)
+     表达式脚本格式：<%= 表达式%>
+     表达式脚本作用: 在JSP页面上输出数据
+      表达式脚本的特点：
+             1、所有的表达式脚本都会被翻译在_jsService()方法中
+              2、表达式脚本都会被翻译为out.print()输出到页面上
+              3、由于表达式脚本翻译的内容都在_jsService()方法中，所以_jsService()方法中的对象都可以直接使用
+               4、表达式脚本中的表达式不能以分号结束
+ （2）代码脚本
+         代码脚本格式：<%   java语句 %>
+         代码脚本的作用：可以在jsp页面中，编写我们自己需要的功能(写的是java语句)
+         代码脚本的特点：
+                1、代码脚本翻译后都在_jsService()方法中
+                 2、代码脚本由于翻译到_jsService()方法中，所以在_jsService()方法中的现有对象都可以直接使用
+                 3、还可以由多个代码脚本组合完成一个完整的java语句
+                 4、代码脚本还可以和表达式脚本一起组合使用。在jsp页面上输出数据
+2、JSP三种注释
+（1）、html注释
+    格式：<!-- 注释内容-->
+    html注释会被翻译到java源代码中。在_jsService()方法中，以out.write输出到客户端
+（2）、java注释
+     格式:     //单行注释
+                /*   多行注释 */
+     java注释会被翻译到java源代码中
+（3）、jsp注释
+     格式： <%-- jsp注释-->
+     jsp注释可以注掉jsp页面中所有代码
+3、JSP九大内置对象
+   request                      请求对象
+   response                    响应对象
+  pageContext              jsp的上下文对象
+  ssession                     会话对象
+  application                 ServletContext对象
+  config                         ServletConfig对象
+  out                              jsp输出流对象
+  page                           指向当前jsp对象
+  exception                     异常对象
+  内置对象可以在jsp中直接调用
+4、jsp四个作用域
+     四个域对象分别是:
+         pageContext       (pageContextImp类)             当前JSP页面范围有效
+         request               (HttpServletRequest类)           一次请求有效
+         session                (HttpSession类)                      一个会话范围内有效
+         application           (ServletContext类)                 整个web工程有效(web工程不停止，数据都在）
+         域对象是可以向map一样存取数据的对象。四个域对象功能不一样。不同的是它们对数据的存取范围。
+     四个域对象虽然都可以存储数据，但由优先顺序(从小到大）
+                 优先顺序:pageContext--->request--->session--->appilcation
+5、out和response.write输出
+   区别：
+        response中表示响应，我们经常用于设置返回客户端的尼尔(输出)
+       out也是给用户做输出使用的。
+   由于jsp翻译之后，底层源代码都是使用out来进行输出，一般情况下，我们在jsp页面中统一使用out来进行输出，避免打乱页面输出内容的顺序
+         out.write() 输出字符串没有问题
+         out.print() 输出任意数据都没有问题（都转换为字符串后调用的write输出）
+6、包含和转发
+（1）静态包含
+   格式:  <%@include file="" %>   
+               file属性指定你要包含的jsp页面的路径
+               地址中第一个斜杠 /  表示为http://ip:prot/工程路径/    映射到代码的web目录
+     静态包含的特点:
+             1、静态包含不会翻译被包含的jsp页面
+              2、静态包含其实是把被包含的jsp页面的代码拷贝到包含的位置执行输出
+（2）动态包含
+     格式:<jsp:include page=""></jsp:include> 
+                   page属性是指你要包含的jsp页面的路径
+                    动态包含也可以像静态包含一样，把被包含的内容执行输出到包含位置
+      动态包含的特点：
+              1、动态包含会把包含的jsp页面也翻译为Java代码
+               2、动态包含可以传递参数
+ （3）请求转发
+       格式：<jsp:forward page=""></jsp:forward> 
+                                 page属性设置请求转发的路径
+7、EL表达式
+    EL表达式是表达式语言
+      作用: EL表达式主要替代JSP页面中的表达式脚本在JSP页面中进行数据的输出
+                    原因:EL表达式在输出数据的时候，要比JSP表达式脚本简洁很多
+     EL表达式输出的格式:${ 表达式 }
+     EL表达式在输出null值 时候，输出的是空的字符串。JSP表达式脚本输出null值，输出的是null字符串
+     EL表达式搜索域数据的顺序:
+            EL表达式主要在JSP页面输出数据。
+               主要输出域对象中的数
+      当四个域中都有相同的key的数据的时候，EL表达式会按照四个域的从小到大的顺序去进行搜索，找到就输出           
+      域从小到大排序：application<--session<--request<--pageContext
+（1） EL输出复杂的bean对象
+         如果Person类中没有该属性对应的get方法，则无法输出 
+8、Fistener监听器
+         Listenter监听器是javaweb的三大组件之一。javaweb三大组件是：Servlet程序、Filter过滤器、Liseter监听器
+         Listenter监听器是javaEE的规范，就是接口
+         监听器的作用：监听某种事务的变化。然后通过回掉函数，反馈给客户(程序)去做某些事务
+         一共有八个监听器
+  （1）ServletContextListener
+       ServletContextListener可以监听ServletContext对象的创建和销毁
+       ServletContext对象在web工程启动的时候创建，在web工程停止的时候销毁
+       监听到创建和销毁之后都会分别调用ServletContextListener监听器的方法反馈
+            两个方法分别是
+                       public void contextDestroyed(ServletContextEvent sce) {
+                             //在ServletContext对象创建之后立马调用
+                               }
+
+                        public void contextInitialized(ServletContextEvent sce) {
+                                 //在ServletContext对象销毁之后立马调用
+                                }
 
 问题:
     1、404：在部署时，修改application Context(应用程序上下文)。然后再回到server选择卡，检查url的值
@@ -209,4 +311,3 @@ getMethod()      获取请求的方式GET或POST
     6、200:请求成功
     7、302请求重定向
     8、
-####一、
