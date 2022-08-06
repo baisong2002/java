@@ -1,4 +1,5 @@
-# 一、IO流原理及流的分类
+# IO流
+###一、IO流原理及流的分类
  - 作用：处理设备之间的输入输出，以“流”的方式，通过标准的方法输入输出
     - 输入：input读取外部数据，到程序中
     - 输出：output将程序输出到储存设备中 
@@ -15,7 +16,7 @@
 输入流：     InpuStream      Reader
 输出流：     OutputStream    Writer 
   ``` 
- #### 其他子类都以上述四个抽象基础类为后缀
+  **其他子类都以上述四个抽象基础类为后缀**
  - 基本用法：
    - 1、创造文件
    - 2、创造流（根据自身需求选择流） 
@@ -54,9 +55,9 @@
             }
         }
 ```
- * read()的理解：返回读入的一个字符。如果达到文件末尾，返回-1 
- * 异常的处理：为了保证流的资源一定可以执行关闭操作。需要使用try-catch-finally处理
- * 读入的文件一定要存在否则就会报异常
+ >>**read()的理解：返回读入的一个字符。如果达到文件末尾，返回-1**   
+ >>**异常的处理：为了保证流的资源一定可以执行关闭操作。需要使用try-catch-finally处理**    
+ >>**读入的文件一定要存在否则就会报异常**    
 ```
 //1、File类的实例化
 File a = new File("hello.txt");
@@ -94,9 +95,9 @@ System.out.println(c[i]);
   - 注意：
     - 1、输出对应的File可以不存在。并不会报异常
       - 如果不存在，在输出会自动创建
-      - 如果存在:
->>- 如果流使用的构造器是：FileWrite(file,false)/FileWrite(file):对原有文件覆盖
->>- 如果流使用的构造器是：FileWrite(file,true)/FileWrite(file):不会对与哪有文件覆盖，而是在原有文件基础上追加内容
+      - 如果存在:  
+      如果流使用的构造器是：FileWrite(file,false)/FileWrite(file):对原有文件覆盖  
+      如果流使用的构造器是：FileWrite(file,true)/FileWrite(file):不会对与哪有文件覆盖，而是在原有文件基础上追加内容  
 ```
            FileWriter b=null;
         try  {
@@ -155,10 +156,10 @@ e.printStackTrace();
 }
 }
 ```
-文本文件（.txt，.java等 ）使用字符流
-非文本文件（.jpg,.mp3等），使用字节流处理
-不能使用字符流来处理图片等数据，要想处理图片片要用字节流
-不能使用字节流来处理字符等数据，否则会出现乱码
+   文本文件（.txt，.java等 ）使用字符流   
+   非文本文件（.jpg,.mp3等），使用字节流处理   
+   不能使用字符流来处理图片等数据，要想处理图片片要用字节流    
+   不能使用字节流来处理字符等数据，否则会出现乱码    
 - 4、FileInputeStream和FileOutputeStream
 ```
 复制图片（输入、输出图片）
@@ -198,15 +199,15 @@ e.printStackTrace();
 }
 ```  
 ### 三、缓冲流（处理流的一种）
-（一）Buffered
-BufferedInput
-BuffrerdOutput
-BufferedRead
-BufferedWrite
-作用：提高流的读取和写入的速度
-提高读写速度的原因：内部提供了一个缓冲区
-flush():刷新缓冲区
-“套接”在已有的流之上
+- （一）Buffered  
+     BufferedInput  
+     BuffrerdOutput  
+     BufferedRead  
+     BufferedWrite  
+  >> 作用：提高流的读取和写入的速度  
+  >> 提高读写速度的原因：内部提供了一个缓冲区  
+ **flush():刷新缓冲区**
+ **“套接”在已有的流之上**
 ```
 1、非文本文件复制
 //造文件
@@ -283,10 +284,10 @@ e.printStackTrace();
         }
 ```
 ### 四、转换流（处理流的一种）
-字节流和字符流之间的转换
-InputStreamReader(字符流)：将一个字节的输入流转换为字符的输入流/解码
-OutputStreamWrite(字符流)：将一个字符的输出流转换为字节的输出流/编码
-字符集：具体使用哪个字符集，取决于文件存储时使用的字符集
+- 字节流和字符流之间的转换  
+>> InputStreamReader(字符流)：将一个字节的输入流转换为字符的输入流/解码  
+>> OutputStreamWrite(字符流)：将一个字符的输出流转换为字节的输出流/编码  
+**字符集：具体使用哪个字符集，取决于文件存储时使用的字符集**
 ```
 FileInputStream a = new FileInputStream("hello.txt");
 InputStreamReader a1 = new InputStreamReader(a);
@@ -297,6 +298,7 @@ String s = new String(b, 0, len);
 System.out.println(s);
 }
 a1.close();
+```
 ```
 FileInputStream b = new FileInputStream("hello.txt");
 FileOutputStream b1 = new FileOutputStream("hello-gbk.txt");
@@ -310,11 +312,11 @@ c1.write(d,0,len);
 c.close();
 c1.close();
 ```
-五、其他流
-输入输出流
-System.in:标准的输入流，从键盘输入
-System.out:标准的输出流,从控制台输出
-System类的setIn(InputStream is )/SetOut(OutputStream is)方式重新指定输入输出流
+###五、其他流
+- 输入输出流
+ >>System.in:标准的输入流，从键盘输入
+ >>System.out:标准的输出流,从控制台输出
+**System类的setIn(InputStream is )/SetOut(OutputStream is)方式重新指定输入输出流**
 ```
 InputStreamReader a = new InputStreamReader(System.in);
 BufferedReader a1 = new BufferedReader(a);
@@ -331,14 +333,14 @@ BufferedReader a1 = new BufferedReader(a);
                 a1.close();
         }
 ```
-打印流：
-PrintStream  PintWriter
-基本数据类型---->字符串
-数据流：
-DateInputStream DateOutputStream
-操作java语言的基本数据类型和String
-将数据持久化到文件中/将文件写出到内存中
-读取顺序要和写入顺序一致
+- 打印流：
+>> PrintStream  PintWriter
+>> 基本数据类型---->字符串 
+- 数据流：
+>> DateInputStream DateOutputStream
+操作java语言的基本数据类型和String  
+将数据持久化到文件中/将文件写出到内存中  
+读取顺序要和写入顺序一致  
 ```
 @Test
 public void A() throws IOException {
@@ -360,10 +362,10 @@ a.close();
     }
 ```
 ### 六、对象流
-用于存储和读取基本数据类型或对象的处理流，可以把对象写入到数据源中
-序列化：ObjectOutputStream类保存基本数据类型
-反序列化：ObjectInputStream类来读取
-对象的序列化机制：允许把内存中的java对象转换为平台无关的二进制流，从而允许把这种二进制流持久保存在磁盘上
+>>用于存储和读取基本数据类型或对象的处理流，可以把对象写入到数据源中  
+**序列化：ObjectOutputStream类保存基本数据类型** 
+**反序列化：ObjectInputStream类来读取**  
+>>对象的序列化机制：允许把内存中的java对象转换为平台无关的二进制流，从而允许把这种二进制流持久保存在磁盘上
 或通过网络将二进制流传输到另一个网络节点//（序列化）当其他程序获取这种二进制，就可以恢复成原来的java对象
 ```
 @Test
@@ -402,14 +404,13 @@ e.printStackTrace();
 }
 }
 ```
-自定义类的序列化和反序列化
-要想一个java对象可序列化，满足那些要求：
-1、实现接口：Serializable(标识接口)
-serialVersionUI：用来表示类的不同版本之间的兼容性
-2、当前类提供的全局常量：public static final long serialVersionUTD =47546353452L;
-3、除了当前类需要实现Serializable接口外，还要保证其内部所有属性也必须可序列化（默认情况下，基本数据类型可序列化）
-补充：
-不能序列化：static/transient修饰的常量
+- 自定义类的序列化和反序列化
+  - 要想一个java对象可序列化，满足那些要求：
+    - 1、实现接口：Serializable(标识接口)
+     **serialVersionUI：用来表示类的不同版本之间的兼容性**
+    - 2、当前类提供的全局常量：public static final long serialVersionUTD =47546353452L;
+    - 3、除了当前类需要实现Serializable接口外，还要保证其内部所有属性也必须可序列化（默认情况下，基本数据类型可序列化）
+**补充： 不能序列化：static/transient修饰的常量**
 ```
 @Test
 public void A() throws IOException {
@@ -453,14 +454,14 @@ System.out.println(o1);
     }
 ```
 ### 七、随机存储文件流   
-直接继承object  即可输入又可输出    实现了DataInput DataOutput接口
-mode参数：
-r:只读文件
-rw：打开以便读取和写入
-rwd：打开以便读取和写入，同步更新文件的内容
-rws：打开以便读取和写入，同步更新文件内容和元数据内容
-如果  RandomAccessFile作为输出流出时，写出到的文件如果不存在，则在执行过程中自动创建
-如果文件存在， 则会对原有文件内容进行覆盖。(默认从头覆盖)
+>>直接继承object  即可输入又可输出    实现了DataInput DataOutput接口
+- **mode参数：**  
+r:只读文件  
+rw：打开以便读取和写入  
+rwd：打开以便读取和写入，同步更新文件的内容  
+rws：打开以便读取和写入，同步更新文件内容和元数据内容  
+>>如果RandomAccessFile作为输出流出时，写出到的文件如果不存在，则在执行过程中自动创建  
+>>如果文件存在， 则会对原有文件内容进行覆盖。(默认从头覆盖)
 ```
 @Test
 public void A() {
