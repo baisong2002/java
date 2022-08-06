@@ -1,7 +1,7 @@
 # 学习
 
 #### 介绍
-学习JAVA,包含了JavaEE、javaweb、spring5、springboot等
+学习JAVA,包含了JavaEE、javaweb、spring5、SSM、springboot等
 
 #### 软件架构
 软件架构说明
